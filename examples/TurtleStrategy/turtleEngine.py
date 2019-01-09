@@ -400,7 +400,7 @@ class DailyResult(object):
                     side = -1
                 
                 commissionCost = (trade.volume * fixedCommission + 
-                                  trade.volume * trade.price * variableCommission)
+                                  trade.volume * trade.price * size * variableCommission)
                 slippageCost = trade.volume * slippage
                 pnl = (close - trade.price) * trade.volume * side * size
                 
