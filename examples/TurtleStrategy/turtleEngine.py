@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+from __future__ import print_function
+
 from csv import DictReader
 from datetime import datetime
 from collections import OrderedDict, defaultdict
@@ -306,7 +308,7 @@ class BacktestingEngine(object):
     #----------------------------------------------------------------------
     def output(self, content):
         """输出信息"""
-        print content
+        print(content)
     
     #----------------------------------------------------------------------
     def getTradeData(self, vtSymbol=''):
@@ -400,7 +402,7 @@ class DailyResult(object):
                     side = -1
                 
                 commissionCost = (trade.volume * fixedCommission + 
-                                  trade.volume * trade.price * size * variableCommission)
+                                  trade.volume * trade.price * variableCommission * size)
                 slippageCost = trade.volume * slippage
                 pnl = (close - trade.price) * trade.volume * side * size
                 
@@ -433,3 +435,4 @@ def formatNumber(n):
     """格式化数字到字符串"""
     rn = round(n, 2)        # 保留两位小数
     return format(rn, ',')  # 加上千分符
+
