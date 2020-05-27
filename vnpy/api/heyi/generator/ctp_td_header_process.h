@@ -14,12 +14,6 @@ void processRspUserPasswordUpdate(Task *task);
 
 void processRspTradingAccountPasswordUpdate(Task *task);
 
-void processRspUserAuthMethod(Task *task);
-
-void processRspGenUserCaptcha(Task *task);
-
-void processRspGenUserText(Task *task);
-
 void processRspOrderInsert(Task *task);
 
 void processRspParkedOrderInsert(Task *task);
@@ -117,8 +111,6 @@ void processRspQryInstrumentOrderCommRate(Task *task);
 void processRspQrySecAgentTradingAccount(Task *task);
 
 void processRspQrySecAgentCheckMode(Task *task);
-
-void processRspQrySecAgentTradeInfo(Task *task);
 
 void processRspQryOptionInstrTradeCost(Task *task);
 

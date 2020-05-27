@@ -6,7 +6,6 @@ int TdApi::reqAuthenticate(const dict &req, int reqid)
 	getString(req, "UserID", myreq.UserID);
 	getString(req, "UserProductInfo", myreq.UserProductInfo);
 	getString(req, "AuthCode", myreq.AuthCode);
-	getString(req, "AppID", myreq.AppID);
 	int i = this->api->ReqAuthenticate(&myreq, reqid);
 	return i;
 };
@@ -26,7 +25,6 @@ int TdApi::reqUserLogin(const dict &req, int reqid)
 	getString(req, "OneTimePassword", myreq.OneTimePassword);
 	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
 	getString(req, "LoginRemark", myreq.LoginRemark);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
 	int i = this->api->ReqUserLogin(&myreq, reqid);
 	return i;
 };
@@ -66,42 +64,9 @@ int TdApi::reqTradingAccountPasswordUpdate(const dict &req, int reqid)
 	return i;
 };
 
-int TdApi::reqUserAuthMethod(const dict &req, int reqid)
+int TdApi::reqUserLogin2(const dict &req, int reqid)
 {
-	CThostFtdcReqUserAuthMethodField myreq = CThostFtdcReqUserAuthMethodField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "UserID", myreq.UserID);
-	int i = this->api->ReqUserAuthMethod(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqGenUserCaptcha(const dict &req, int reqid)
-{
-	CThostFtdcReqGenUserCaptchaField myreq = CThostFtdcReqGenUserCaptchaField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "UserID", myreq.UserID);
-	int i = this->api->ReqGenUserCaptcha(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqGenUserText(const dict &req, int reqid)
-{
-	CThostFtdcReqGenUserTextField myreq = CThostFtdcReqGenUserTextField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "UserID", myreq.UserID);
-	int i = this->api->ReqGenUserText(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqUserLoginWithCaptcha(const dict &req, int reqid)
-{
-	CThostFtdcReqUserLoginWithCaptchaField myreq = CThostFtdcReqUserLoginWithCaptchaField();
+	CThostFtdcReqUserLoginField myreq = CThostFtdcReqUserLoginField();
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "TradingDay", myreq.TradingDay);
 	getString(req, "BrokerID", myreq.BrokerID);
@@ -111,51 +76,22 @@ int TdApi::reqUserLoginWithCaptcha(const dict &req, int reqid)
 	getString(req, "InterfaceProductInfo", myreq.InterfaceProductInfo);
 	getString(req, "ProtocolInfo", myreq.ProtocolInfo);
 	getString(req, "MacAddress", myreq.MacAddress);
+	getString(req, "OneTimePassword", myreq.OneTimePassword);
 	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
 	getString(req, "LoginRemark", myreq.LoginRemark);
-	getString(req, "Captcha", myreq.Captcha);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
-	int i = this->api->ReqUserLoginWithCaptcha(&myreq, reqid);
+	int i = this->api->ReqUserLogin2(&myreq, reqid);
 	return i;
 };
 
-int TdApi::reqUserLoginWithText(const dict &req, int reqid)
+int TdApi::reqUserPasswordUpdate2(const dict &req, int reqid)
 {
-	CThostFtdcReqUserLoginWithTextField myreq = CThostFtdcReqUserLoginWithTextField();
+	CThostFtdcUserPasswordUpdateField myreq = CThostFtdcUserPasswordUpdateField();
 	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
 	getString(req, "BrokerID", myreq.BrokerID);
 	getString(req, "UserID", myreq.UserID);
-	getString(req, "Password", myreq.Password);
-	getString(req, "UserProductInfo", myreq.UserProductInfo);
-	getString(req, "InterfaceProductInfo", myreq.InterfaceProductInfo);
-	getString(req, "ProtocolInfo", myreq.ProtocolInfo);
-	getString(req, "MacAddress", myreq.MacAddress);
-	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
-	getString(req, "LoginRemark", myreq.LoginRemark);
-	getString(req, "Text", myreq.Text);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
-	int i = this->api->ReqUserLoginWithText(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqUserLoginWithOTP(const dict &req, int reqid)
-{
-	CThostFtdcReqUserLoginWithOTPField myreq = CThostFtdcReqUserLoginWithOTPField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "UserID", myreq.UserID);
-	getString(req, "Password", myreq.Password);
-	getString(req, "UserProductInfo", myreq.UserProductInfo);
-	getString(req, "InterfaceProductInfo", myreq.InterfaceProductInfo);
-	getString(req, "ProtocolInfo", myreq.ProtocolInfo);
-	getString(req, "MacAddress", myreq.MacAddress);
-	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
-	getString(req, "LoginRemark", myreq.LoginRemark);
-	getString(req, "OTPPassword", myreq.OTPPassword);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
-	int i = this->api->ReqUserLoginWithOTP(&myreq, reqid);
+	getString(req, "OldPassword", myreq.OldPassword);
+	getString(req, "NewPassword", myreq.NewPassword);
+	int i = this->api->ReqUserPasswordUpdate2(&myreq, reqid);
 	return i;
 };
 
@@ -940,16 +876,6 @@ int TdApi::reqQrySecAgentCheckMode(const dict &req, int reqid)
 	getString(req, "BrokerID", myreq.BrokerID);
 	getString(req, "InvestorID", myreq.InvestorID);
 	int i = this->api->ReqQrySecAgentCheckMode(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqQrySecAgentTradeInfo(const dict &req, int reqid)
-{
-	CThostFtdcQrySecAgentTradeInfoField myreq = CThostFtdcQrySecAgentTradeInfoField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "BrokerSecAgentID", myreq.BrokerSecAgentID);
-	int i = this->api->ReqQrySecAgentTradeInfo(&myreq, reqid);
 	return i;
 };
 

@@ -15,7 +15,6 @@ CThostFtdcReqUserLoginField = {
     "OneTimePassword": "string",
     "ClientIPAddress": "string",
     "LoginRemark": "string",
-    "ClientIPPort": "int",
 }
 
 CThostFtdcRspUserLoginField = {
@@ -49,15 +48,12 @@ CThostFtdcReqAuthenticateField = {
     "UserID": "string",
     "UserProductInfo": "string",
     "AuthCode": "string",
-    "AppID": "string",
 }
 
 CThostFtdcRspAuthenticateField = {
     "BrokerID": "string",
     "UserID": "string",
     "UserProductInfo": "string",
-    "AppID": "string",
-    "AppType": "char",
 }
 
 CThostFtdcAuthenticationInfoField = {
@@ -66,8 +62,6 @@ CThostFtdcAuthenticationInfoField = {
     "UserProductInfo": "string",
     "AuthInfo": "string",
     "IsResult": "int",
-    "AppID": "string",
-    "AppType": "char",
 }
 
 CThostFtdcRspUserLogin2Field = {
@@ -1696,8 +1690,6 @@ CThostFtdcExchangeExecOrderActionField = {
     "BranchID": "string",
     "IPAddress": "string",
     "MacAddress": "string",
-    "ExchangeInstID": "string",
-    "Volume": "int",
 }
 
 CThostFtdcQryExchangeExecOrderActionField = {
@@ -2555,8 +2547,6 @@ CThostFtdcExchangeOptionSelfCloseActionField = {
     "BranchID": "string",
     "IPAddress": "string",
     "MacAddress": "string",
-    "ExchangeInstID": "string",
-    "OptSelfCloseFlag": "char",
 }
 
 CThostFtdcSyncDelaySwapField = {
@@ -2600,13 +2590,6 @@ CThostFtdcSecAgentCheckModeField = {
     "CurrencyID": "string",
     "BrokerSecAgentID": "string",
     "CheckSelfAccount": "int",
-}
-
-CThostFtdcSecAgentTradeInfoField = {
-    "BrokerID": "string",
-    "BrokerSecAgentID": "string",
-    "InvestorID": "string",
-    "LongCustomerName": "string",
 }
 
 CThostFtdcMarketDataField = {
@@ -4787,122 +4770,3 @@ CThostFtdcQrySecAgentCheckModeField = {
     "InvestorID": "string",
 }
 
-CThostFtdcQrySecAgentTradeInfoField = {
-    "BrokerID": "string",
-    "BrokerSecAgentID": "string",
-}
-
-CThostFtdcUserSystemInfoField = {
-    "BrokerID": "string",
-    "UserID": "string",
-    "ClientSystemInfoLen": "int",
-    "ClientSystemInfo": "string",
-    "ClientPublicIP": "string",
-    "ClientIPPort": "int",
-    "ClientLoginTime": "string",
-    "ClientAppID": "string",
-}
-
-CThostFtdcReqUserAuthMethodField = {
-    "TradingDay": "string",
-    "BrokerID": "string",
-    "UserID": "string",
-}
-
-CThostFtdcRspUserAuthMethodField = {
-    "UsableAuthMethod": "int",
-}
-
-CThostFtdcReqGenUserCaptchaField = {
-    "TradingDay": "string",
-    "BrokerID": "string",
-    "UserID": "string",
-}
-
-CThostFtdcRspGenUserCaptchaField = {
-    "BrokerID": "string",
-    "UserID": "string",
-    "CaptchaInfoLen": "int",
-    "CaptchaInfo": "string",
-}
-
-CThostFtdcReqGenUserTextField = {
-    "TradingDay": "string",
-    "BrokerID": "string",
-    "UserID": "string",
-}
-
-CThostFtdcRspGenUserTextField = {
-    "UserTextSeq": "int",
-}
-
-CThostFtdcReqUserLoginWithCaptchaField = {
-    "TradingDay": "string",
-    "BrokerID": "string",
-    "UserID": "string",
-    "Password": "string",
-    "UserProductInfo": "string",
-    "InterfaceProductInfo": "string",
-    "ProtocolInfo": "string",
-    "MacAddress": "string",
-    "ClientIPAddress": "string",
-    "LoginRemark": "string",
-    "Captcha": "string",
-    "ClientIPPort": "int",
-}
-
-CThostFtdcReqUserLoginWithTextField = {
-    "TradingDay": "string",
-    "BrokerID": "string",
-    "UserID": "string",
-    "Password": "string",
-    "UserProductInfo": "string",
-    "InterfaceProductInfo": "string",
-    "ProtocolInfo": "string",
-    "MacAddress": "string",
-    "ClientIPAddress": "string",
-    "LoginRemark": "string",
-    "Text": "string",
-    "ClientIPPort": "int",
-}
-
-CThostFtdcReqUserLoginWithOTPField = {
-    "TradingDay": "string",
-    "BrokerID": "string",
-    "UserID": "string",
-    "Password": "string",
-    "UserProductInfo": "string",
-    "InterfaceProductInfo": "string",
-    "ProtocolInfo": "string",
-    "MacAddress": "string",
-    "ClientIPAddress": "string",
-    "LoginRemark": "string",
-    "OTPPassword": "string",
-    "ClientIPPort": "int",
-}
-
-CThostFtdcReqApiHandshakeField = {
-    "CryptoKeyVersion": "string",
-}
-
-CThostFtdcRspApiHandshakeField = {
-    "FrontHandshakeDataLen": "int",
-    "FrontHandshakeData": "string",
-    "IsApiAuthEnabled": "int",
-}
-
-CThostFtdcReqVerifyApiKeyField = {
-    "ApiHandshakeDataLen": "int",
-    "ApiHandshakeData": "string",
-}
-
-CThostFtdcDepartmentUserField = {
-    "BrokerID": "string",
-    "UserID": "string",
-    "InvestorRange": "char",
-    "InvestorID": "string",
-}
-
-CThostFtdcQueryFreqField = {
-    "QueryFreq": "int",
-}

@@ -94,42 +94,6 @@ void onRspTradingAccountPasswordUpdate(const dict &data, const dict &error, int 
 	}
 };
 
-void onRspUserAuthMethod(const dict &data, const dict &error, int reqid, bool last) override
-{
-	try
-	{
-		PYBIND11_OVERLOAD(void, TdApi, onRspUserAuthMethod, data, error, reqid, last);
-	}
-	catch (const error_already_set &e)
-	{
-		cout << e.what() << endl;
-	}
-};
-
-void onRspGenUserCaptcha(const dict &data, const dict &error, int reqid, bool last) override
-{
-	try
-	{
-		PYBIND11_OVERLOAD(void, TdApi, onRspGenUserCaptcha, data, error, reqid, last);
-	}
-	catch (const error_already_set &e)
-	{
-		cout << e.what() << endl;
-	}
-};
-
-void onRspGenUserText(const dict &data, const dict &error, int reqid, bool last) override
-{
-	try
-	{
-		PYBIND11_OVERLOAD(void, TdApi, onRspGenUserText, data, error, reqid, last);
-	}
-	catch (const error_already_set &e)
-	{
-		cout << e.what() << endl;
-	}
-};
-
 void onRspOrderInsert(const dict &data, const dict &error, int reqid, bool last) override
 {
 	try
@@ -711,18 +675,6 @@ void onRspQrySecAgentCheckMode(const dict &data, const dict &error, int reqid, b
 	try
 	{
 		PYBIND11_OVERLOAD(void, TdApi, onRspQrySecAgentCheckMode, data, error, reqid, last);
-	}
-	catch (const error_already_set &e)
-	{
-		cout << e.what() << endl;
-	}
-};
-
-void onRspQrySecAgentTradeInfo(const dict &data, const dict &error, int reqid, bool last) override
-{
-	try
-	{
-		PYBIND11_OVERLOAD(void, TdApi, onRspQrySecAgentTradeInfo, data, error, reqid, last);
 	}
 	catch (const error_already_set &e)
 	{

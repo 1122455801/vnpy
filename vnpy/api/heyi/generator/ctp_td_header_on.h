@@ -14,12 +14,6 @@ virtual void onRspUserPasswordUpdate(const dict &data, const dict &error, int re
 
 virtual void onRspTradingAccountPasswordUpdate(const dict &data, const dict &error, int reqid, bool last) {};
 
-virtual void onRspUserAuthMethod(const dict &data, const dict &error, int reqid, bool last) {};
-
-virtual void onRspGenUserCaptcha(const dict &data, const dict &error, int reqid, bool last) {};
-
-virtual void onRspGenUserText(const dict &data, const dict &error, int reqid, bool last) {};
-
 virtual void onRspOrderInsert(const dict &data, const dict &error, int reqid, bool last) {};
 
 virtual void onRspParkedOrderInsert(const dict &data, const dict &error, int reqid, bool last) {};
@@ -117,8 +111,6 @@ virtual void onRspQryInstrumentOrderCommRate(const dict &data, const dict &error
 virtual void onRspQrySecAgentTradingAccount(const dict &data, const dict &error, int reqid, bool last) {};
 
 virtual void onRspQrySecAgentCheckMode(const dict &data, const dict &error, int reqid, bool last) {};
-
-virtual void onRspQrySecAgentTradeInfo(const dict &data, const dict &error, int reqid, bool last) {};
 
 virtual void onRspQryOptionInstrTradeCost(const dict &data, const dict &error, int reqid, bool last) {};
 

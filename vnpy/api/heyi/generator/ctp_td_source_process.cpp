@@ -26,8 +26,6 @@ void TdApi::processRspAuthenticate(Task *task)
 		data["BrokerID"] = toUtf(task_data->BrokerID);
 		data["UserID"] = toUtf(task_data->UserID);
 		data["UserProductInfo"] = toUtf(task_data->UserProductInfo);
-		data["AppID"] = toUtf(task_data->AppID);
-		data["AppType"] = task_data->AppType;
 		delete task_data;
 	}
 	dict error;
@@ -143,72 +141,6 @@ void TdApi::processRspTradingAccountPasswordUpdate(Task *task)
 		delete task_error;
 	}
 	this->onRspTradingAccountPasswordUpdate(data, error, task->task_id, task->task_last);
-};
-
-void TdApi::processRspUserAuthMethod(Task *task)
-{
-	gil_scoped_acquire acquire;
-	dict data;
-	if (task->task_data)
-	{
-		CThostFtdcRspUserAuthMethodField *task_data = (CThostFtdcRspUserAuthMethodField*)task->task_data;
-		data["UsableAuthMethod"] = task_data->UsableAuthMethod;
-		delete task_data;
-	}
-	dict error;
-	if (task->task_error)
-	{
-		CThostFtdcRspInfoField *task_error = (CThostFtdcRspInfoField*)task->task_error;
-		error["ErrorID"] = task_error->ErrorID;
-		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
-		delete task_error;
-	}
-	this->onRspUserAuthMethod(data, error, task->task_id, task->task_last);
-};
-
-void TdApi::processRspGenUserCaptcha(Task *task)
-{
-	gil_scoped_acquire acquire;
-	dict data;
-	if (task->task_data)
-	{
-		CThostFtdcRspGenUserCaptchaField *task_data = (CThostFtdcRspGenUserCaptchaField*)task->task_data;
-		data["BrokerID"] = toUtf(task_data->BrokerID);
-		data["UserID"] = toUtf(task_data->UserID);
-		data["CaptchaInfoLen"] = task_data->CaptchaInfoLen;
-		data["CaptchaInfo"] = toUtf(task_data->CaptchaInfo);
-		delete task_data;
-	}
-	dict error;
-	if (task->task_error)
-	{
-		CThostFtdcRspInfoField *task_error = (CThostFtdcRspInfoField*)task->task_error;
-		error["ErrorID"] = task_error->ErrorID;
-		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
-		delete task_error;
-	}
-	this->onRspGenUserCaptcha(data, error, task->task_id, task->task_last);
-};
-
-void TdApi::processRspGenUserText(Task *task)
-{
-	gil_scoped_acquire acquire;
-	dict data;
-	if (task->task_data)
-	{
-		CThostFtdcRspGenUserTextField *task_data = (CThostFtdcRspGenUserTextField*)task->task_data;
-		data["UserTextSeq"] = task_data->UserTextSeq;
-		delete task_data;
-	}
-	dict error;
-	if (task->task_error)
-	{
-		CThostFtdcRspInfoField *task_error = (CThostFtdcRspInfoField*)task->task_error;
-		error["ErrorID"] = task_error->ErrorID;
-		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
-		delete task_error;
-	}
-	this->onRspGenUserText(data, error, task->task_id, task->task_last);
 };
 
 void TdApi::processRspOrderInsert(Task *task)
@@ -2026,30 +1958,6 @@ void TdApi::processRspQrySecAgentCheckMode(Task *task)
 		delete task_error;
 	}
 	this->onRspQrySecAgentCheckMode(data, error, task->task_id, task->task_last);
-};
-
-void TdApi::processRspQrySecAgentTradeInfo(Task *task)
-{
-	gil_scoped_acquire acquire;
-	dict data;
-	if (task->task_data)
-	{
-		CThostFtdcSecAgentTradeInfoField *task_data = (CThostFtdcSecAgentTradeInfoField*)task->task_data;
-		data["BrokerID"] = toUtf(task_data->BrokerID);
-		data["BrokerSecAgentID"] = toUtf(task_data->BrokerSecAgentID);
-		data["InvestorID"] = toUtf(task_data->InvestorID);
-		data["LongCustomerName"] = toUtf(task_data->LongCustomerName);
-		delete task_data;
-	}
-	dict error;
-	if (task->task_error)
-	{
-		CThostFtdcRspInfoField *task_error = (CThostFtdcRspInfoField*)task->task_error;
-		error["ErrorID"] = task_error->ErrorID;
-		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
-		delete task_error;
-	}
-	this->onRspQrySecAgentTradeInfo(data, error, task->task_id, task->task_last);
 };
 
 void TdApi::processRspQryOptionInstrTradeCost(Task *task)

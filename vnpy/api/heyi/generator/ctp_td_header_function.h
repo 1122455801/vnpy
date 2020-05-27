@@ -8,17 +8,9 @@ int reqUserPasswordUpdate(const dict &req, int reqid);
 
 int reqTradingAccountPasswordUpdate(const dict &req, int reqid);
 
-int reqUserAuthMethod(const dict &req, int reqid);
+int reqUserLogin2(const dict &req, int reqid);
 
-int reqGenUserCaptcha(const dict &req, int reqid);
-
-int reqGenUserText(const dict &req, int reqid);
-
-int reqUserLoginWithCaptcha(const dict &req, int reqid);
-
-int reqUserLoginWithText(const dict &req, int reqid);
-
-int reqUserLoginWithOTP(const dict &req, int reqid);
+int reqUserPasswordUpdate2(const dict &req, int reqid);
 
 int reqOrderInsert(const dict &req, int reqid);
 
@@ -117,8 +109,6 @@ int reqQryInstrumentOrderCommRate(const dict &req, int reqid);
 int reqQrySecAgentTradingAccount(const dict &req, int reqid);
 
 int reqQrySecAgentCheckMode(const dict &req, int reqid);
-
-int reqQrySecAgentTradeInfo(const dict &req, int reqid);
 
 int reqQryOptionInstrTradeCost(const dict &req, int reqid);
 

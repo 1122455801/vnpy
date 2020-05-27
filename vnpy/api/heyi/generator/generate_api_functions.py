@@ -341,5 +341,5 @@ if __name__ == "__main__":
     md_generator = ApiGenerator("../include/ctp/ThostFtdcMdApi.h", "ctp", "md", "MdApi")
     md_generator.run()
 
-    td_generator = ApiGenerator("../include/ctp/ThostFtdcTraderApi.h", "ctp", "td", "TdApi")
-    td_generator.run()
+    # td_generator = ApiGenerator("../include/ctp/ThostFtdcTraderApi.h", "ctp", "td", "TdApi")
+    # td_generator.run()

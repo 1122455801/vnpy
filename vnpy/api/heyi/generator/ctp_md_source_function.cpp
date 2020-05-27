@@ -13,7 +13,6 @@ int MdApi::reqUserLogin(const dict &req, int reqid)
 	getString(req, "OneTimePassword", myreq.OneTimePassword);
 	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
 	getString(req, "LoginRemark", myreq.LoginRemark);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
 	int i = this->api->ReqUserLogin(&myreq, reqid);
 	return i;
 };

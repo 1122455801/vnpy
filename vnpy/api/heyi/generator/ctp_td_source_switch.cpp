@@ -46,24 +46,6 @@ case ONRSPTRADINGACCOUNTPASSWORDUPDATE:
 	break;
 }
 
-case ONRSPUSERAUTHMETHOD:
-{
-	this->processRspUserAuthMethod(&task);
-	break;
-}
-
-case ONRSPGENUSERCAPTCHA:
-{
-	this->processRspGenUserCaptcha(&task);
-	break;
-}
-
-case ONRSPGENUSERTEXT:
-{
-	this->processRspGenUserText(&task);
-	break;
-}
-
 case ONRSPORDERINSERT:
 {
 	this->processRspOrderInsert(&task);
@@ -355,12 +337,6 @@ case ONRSPQRYSECAGENTTRADINGACCOUNT:
 case ONRSPQRYSECAGENTCHECKMODE:
 {
 	this->processRspQrySecAgentCheckMode(&task);
-	break;
-}
-
-case ONRSPQRYSECAGENTTRADEINFO:
-{
-	this->processRspQrySecAgentTradeInfo(&task);
 	break;
 }
 
