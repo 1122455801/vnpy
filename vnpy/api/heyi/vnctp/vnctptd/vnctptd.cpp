@@ -136,69 +136,6 @@ void TdApi::OnRspTradingAccountPasswordUpdate(CThostFtdcTradingAccountPasswordUp
 	this->task_queue.push(task);
 };
 
-void TdApi::OnRspUserAuthMethod(CThostFtdcRspUserAuthMethodField *pRspUserAuthMethod, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	Task task = Task();
-	task.task_name = ONRSPUSERAUTHMETHOD;
-	if (pRspUserAuthMethod)
-	{
-		CThostFtdcRspUserAuthMethodField *task_data = new CThostFtdcRspUserAuthMethodField();
-		*task_data = *pRspUserAuthMethod;
-		task.task_data = task_data;
-	}
-	if (pRspInfo)
-	{
-		CThostFtdcRspInfoField *task_error = new CThostFtdcRspInfoField();
-		*task_error = *pRspInfo;
-		task.task_error = task_error;
-	}
-	task.task_id = nRequestID;
-	task.task_last = bIsLast;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnRspGenUserCaptcha(CThostFtdcRspGenUserCaptchaField *pRspGenUserCaptcha, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	Task task = Task();
-	task.task_name = ONRSPGENUSERCAPTCHA;
-	if (pRspGenUserCaptcha)
-	{
-		CThostFtdcRspGenUserCaptchaField *task_data = new CThostFtdcRspGenUserCaptchaField();
-		*task_data = *pRspGenUserCaptcha;
-		task.task_data = task_data;
-	}
-	if (pRspInfo)
-	{
-		CThostFtdcRspInfoField *task_error = new CThostFtdcRspInfoField();
-		*task_error = *pRspInfo;
-		task.task_error = task_error;
-	}
-	task.task_id = nRequestID;
-	task.task_last = bIsLast;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnRspGenUserText(CThostFtdcRspGenUserTextField *pRspGenUserText, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	Task task = Task();
-	task.task_name = ONRSPGENUSERTEXT;
-	if (pRspGenUserText)
-	{
-		CThostFtdcRspGenUserTextField *task_data = new CThostFtdcRspGenUserTextField();
-		*task_data = *pRspGenUserText;
-		task.task_data = task_data;
-	}
-	if (pRspInfo)
-	{
-		CThostFtdcRspInfoField *task_error = new CThostFtdcRspInfoField();
-		*task_error = *pRspInfo;
-		task.task_error = task_error;
-	}
-	task.task_id = nRequestID;
-	task.task_last = bIsLast;
-	this->task_queue.push(task);
-};
-
 void TdApi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	Task task = Task();
@@ -1215,27 +1152,6 @@ void TdApi::OnRspQrySecAgentCheckMode(CThostFtdcSecAgentCheckModeField *pSecAgen
 	{
 		CThostFtdcSecAgentCheckModeField *task_data = new CThostFtdcSecAgentCheckModeField();
 		*task_data = *pSecAgentCheckMode;
-		task.task_data = task_data;
-	}
-	if (pRspInfo)
-	{
-		CThostFtdcRspInfoField *task_error = new CThostFtdcRspInfoField();
-		*task_error = *pRspInfo;
-		task.task_error = task_error;
-	}
-	task.task_id = nRequestID;
-	task.task_last = bIsLast;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnRspQrySecAgentTradeInfo(CThostFtdcSecAgentTradeInfoField *pSecAgentTradeInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	Task task = Task();
-	task.task_name = ONRSPQRYSECAGENTTRADEINFO;
-	if (pSecAgentTradeInfo)
-	{
-		CThostFtdcSecAgentTradeInfoField *task_data = new CThostFtdcSecAgentTradeInfoField();
-		*task_data = *pSecAgentTradeInfo;
 		task.task_data = task_data;
 	}
 	if (pRspInfo)
@@ -2348,6 +2264,7 @@ void TdApi::OnRtnChangeAccountByBank(CThostFtdcChangeAccountField *pChangeAccoun
 };
 
 
+
 ///-------------------------------------------------------------------------------------
 ///工作线程从队列中取出数据，转化为python对象后，进行推送
 ///-------------------------------------------------------------------------------------
@@ -2407,24 +2324,6 @@ void TdApi::processTask()
 			case ONRSPTRADINGACCOUNTPASSWORDUPDATE:
 			{
 				this->processRspTradingAccountPasswordUpdate(&task);
-				break;
-			}
-
-			case ONRSPUSERAUTHMETHOD:
-			{
-				this->processRspUserAuthMethod(&task);
-				break;
-			}
-
-			case ONRSPGENUSERCAPTCHA:
-			{
-				this->processRspGenUserCaptcha(&task);
-				break;
-			}
-
-			case ONRSPGENUSERTEXT:
-			{
-				this->processRspGenUserText(&task);
 				break;
 			}
 
@@ -2719,12 +2618,6 @@ void TdApi::processTask()
 			case ONRSPQRYSECAGENTCHECKMODE:
 			{
 				this->processRspQrySecAgentCheckMode(&task);
-				break;
-			}
-
-			case ONRSPQRYSECAGENTTRADEINFO:
-			{
-				this->processRspQrySecAgentTradeInfo(&task);
 				break;
 			}
 
@@ -3111,6 +3004,8 @@ void TdApi::processTask()
 				this->processRtnChangeAccountByBank(&task);
 				break;
 			}
+
+
             };
         }
     }
@@ -3147,8 +3042,6 @@ void TdApi::processRspAuthenticate(Task *task)
 		data["BrokerID"] = toUtf(task_data->BrokerID);
 		data["UserID"] = toUtf(task_data->UserID);
 		data["UserProductInfo"] = toUtf(task_data->UserProductInfo);
-		data["AppID"] = toUtf(task_data->AppID);
-		data["AppType"] = task_data->AppType;
 		delete task_data;
 	}
 	dict error;
@@ -3264,72 +3157,6 @@ void TdApi::processRspTradingAccountPasswordUpdate(Task *task)
 		delete task_error;
 	}
 	this->onRspTradingAccountPasswordUpdate(data, error, task->task_id, task->task_last);
-};
-
-void TdApi::processRspUserAuthMethod(Task *task)
-{
-	gil_scoped_acquire acquire;
-	dict data;
-	if (task->task_data)
-	{
-		CThostFtdcRspUserAuthMethodField *task_data = (CThostFtdcRspUserAuthMethodField*)task->task_data;
-		data["UsableAuthMethod"] = task_data->UsableAuthMethod;
-		delete task_data;
-	}
-	dict error;
-	if (task->task_error)
-	{
-		CThostFtdcRspInfoField *task_error = (CThostFtdcRspInfoField*)task->task_error;
-		error["ErrorID"] = task_error->ErrorID;
-		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
-		delete task_error;
-	}
-	this->onRspUserAuthMethod(data, error, task->task_id, task->task_last);
-};
-
-void TdApi::processRspGenUserCaptcha(Task *task)
-{
-	gil_scoped_acquire acquire;
-	dict data;
-	if (task->task_data)
-	{
-		CThostFtdcRspGenUserCaptchaField *task_data = (CThostFtdcRspGenUserCaptchaField*)task->task_data;
-		data["BrokerID"] = toUtf(task_data->BrokerID);
-		data["UserID"] = toUtf(task_data->UserID);
-		data["CaptchaInfoLen"] = task_data->CaptchaInfoLen;
-		data["CaptchaInfo"] = toUtf(task_data->CaptchaInfo);
-		delete task_data;
-	}
-	dict error;
-	if (task->task_error)
-	{
-		CThostFtdcRspInfoField *task_error = (CThostFtdcRspInfoField*)task->task_error;
-		error["ErrorID"] = task_error->ErrorID;
-		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
-		delete task_error;
-	}
-	this->onRspGenUserCaptcha(data, error, task->task_id, task->task_last);
-};
-
-void TdApi::processRspGenUserText(Task *task)
-{
-	gil_scoped_acquire acquire;
-	dict data;
-	if (task->task_data)
-	{
-		CThostFtdcRspGenUserTextField *task_data = (CThostFtdcRspGenUserTextField*)task->task_data;
-		data["UserTextSeq"] = task_data->UserTextSeq;
-		delete task_data;
-	}
-	dict error;
-	if (task->task_error)
-	{
-		CThostFtdcRspInfoField *task_error = (CThostFtdcRspInfoField*)task->task_error;
-		error["ErrorID"] = task_error->ErrorID;
-		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
-		delete task_error;
-	}
-	this->onRspGenUserText(data, error, task->task_id, task->task_last);
 };
 
 void TdApi::processRspOrderInsert(Task *task)
@@ -5147,30 +4974,6 @@ void TdApi::processRspQrySecAgentCheckMode(Task *task)
 		delete task_error;
 	}
 	this->onRspQrySecAgentCheckMode(data, error, task->task_id, task->task_last);
-};
-
-void TdApi::processRspQrySecAgentTradeInfo(Task *task)
-{
-	gil_scoped_acquire acquire;
-	dict data;
-	if (task->task_data)
-	{
-		CThostFtdcSecAgentTradeInfoField *task_data = (CThostFtdcSecAgentTradeInfoField*)task->task_data;
-		data["BrokerID"] = toUtf(task_data->BrokerID);
-		data["BrokerSecAgentID"] = toUtf(task_data->BrokerSecAgentID);
-		data["InvestorID"] = toUtf(task_data->InvestorID);
-		data["LongCustomerName"] = toUtf(task_data->LongCustomerName);
-		delete task_data;
-	}
-	dict error;
-	if (task->task_error)
-	{
-		CThostFtdcRspInfoField *task_error = (CThostFtdcRspInfoField*)task->task_error;
-		error["ErrorID"] = task_error->ErrorID;
-		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
-		delete task_error;
-	}
-	this->onRspQrySecAgentTradeInfo(data, error, task->task_id, task->task_last);
 };
 
 void TdApi::processRspQryOptionInstrTradeCost(Task *task)
@@ -8236,6 +8039,7 @@ void TdApi::processRtnChangeAccountByBank(Task *task)
 };
 
 
+
 ///-------------------------------------------------------------------------------------
 ///主动函数
 ///-------------------------------------------------------------------------------------
@@ -8306,7 +8110,6 @@ int TdApi::reqAuthenticate(const dict &req, int reqid)
 	getString(req, "UserID", myreq.UserID);
 	getString(req, "UserProductInfo", myreq.UserProductInfo);
 	getString(req, "AuthCode", myreq.AuthCode);
-	getString(req, "AppID", myreq.AppID);
 	int i = this->api->ReqAuthenticate(&myreq, reqid);
 	return i;
 };
@@ -8326,7 +8129,6 @@ int TdApi::reqUserLogin(const dict &req, int reqid)
 	getString(req, "OneTimePassword", myreq.OneTimePassword);
 	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
 	getString(req, "LoginRemark", myreq.LoginRemark);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
 	int i = this->api->ReqUserLogin(&myreq, reqid);
 	return i;
 };
@@ -8366,42 +8168,9 @@ int TdApi::reqTradingAccountPasswordUpdate(const dict &req, int reqid)
 	return i;
 };
 
-int TdApi::reqUserAuthMethod(const dict &req, int reqid)
+int TdApi::reqUserLogin2(const dict &req, int reqid)
 {
-	CThostFtdcReqUserAuthMethodField myreq = CThostFtdcReqUserAuthMethodField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "UserID", myreq.UserID);
-	int i = this->api->ReqUserAuthMethod(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqGenUserCaptcha(const dict &req, int reqid)
-{
-	CThostFtdcReqGenUserCaptchaField myreq = CThostFtdcReqGenUserCaptchaField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "UserID", myreq.UserID);
-	int i = this->api->ReqGenUserCaptcha(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqGenUserText(const dict &req, int reqid)
-{
-	CThostFtdcReqGenUserTextField myreq = CThostFtdcReqGenUserTextField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "UserID", myreq.UserID);
-	int i = this->api->ReqGenUserText(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqUserLoginWithCaptcha(const dict &req, int reqid)
-{
-	CThostFtdcReqUserLoginWithCaptchaField myreq = CThostFtdcReqUserLoginWithCaptchaField();
+	CThostFtdcReqUserLoginField myreq = CThostFtdcReqUserLoginField();
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "TradingDay", myreq.TradingDay);
 	getString(req, "BrokerID", myreq.BrokerID);
@@ -8411,51 +8180,22 @@ int TdApi::reqUserLoginWithCaptcha(const dict &req, int reqid)
 	getString(req, "InterfaceProductInfo", myreq.InterfaceProductInfo);
 	getString(req, "ProtocolInfo", myreq.ProtocolInfo);
 	getString(req, "MacAddress", myreq.MacAddress);
+	getString(req, "OneTimePassword", myreq.OneTimePassword);
 	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
 	getString(req, "LoginRemark", myreq.LoginRemark);
-	getString(req, "Captcha", myreq.Captcha);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
-	int i = this->api->ReqUserLoginWithCaptcha(&myreq, reqid);
+	int i = this->api->ReqUserLogin2(&myreq, reqid);
 	return i;
 };
 
-int TdApi::reqUserLoginWithText(const dict &req, int reqid)
+int TdApi::reqUserPasswordUpdate2(const dict &req, int reqid)
 {
-	CThostFtdcReqUserLoginWithTextField myreq = CThostFtdcReqUserLoginWithTextField();
+	CThostFtdcUserPasswordUpdateField myreq = CThostFtdcUserPasswordUpdateField();
 	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
 	getString(req, "BrokerID", myreq.BrokerID);
 	getString(req, "UserID", myreq.UserID);
-	getString(req, "Password", myreq.Password);
-	getString(req, "UserProductInfo", myreq.UserProductInfo);
-	getString(req, "InterfaceProductInfo", myreq.InterfaceProductInfo);
-	getString(req, "ProtocolInfo", myreq.ProtocolInfo);
-	getString(req, "MacAddress", myreq.MacAddress);
-	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
-	getString(req, "LoginRemark", myreq.LoginRemark);
-	getString(req, "Text", myreq.Text);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
-	int i = this->api->ReqUserLoginWithText(&myreq, reqid);
-	return i;
-};
-
-int TdApi::reqUserLoginWithOTP(const dict &req, int reqid)
-{
-	CThostFtdcReqUserLoginWithOTPField myreq = CThostFtdcReqUserLoginWithOTPField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "TradingDay", myreq.TradingDay);
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "UserID", myreq.UserID);
-	getString(req, "Password", myreq.Password);
-	getString(req, "UserProductInfo", myreq.UserProductInfo);
-	getString(req, "InterfaceProductInfo", myreq.InterfaceProductInfo);
-	getString(req, "ProtocolInfo", myreq.ProtocolInfo);
-	getString(req, "MacAddress", myreq.MacAddress);
-	getString(req, "ClientIPAddress", myreq.ClientIPAddress);
-	getString(req, "LoginRemark", myreq.LoginRemark);
-	getString(req, "OTPPassword", myreq.OTPPassword);
-	getInt(req, "ClientIPPort", &myreq.ClientIPPort);
-	int i = this->api->ReqUserLoginWithOTP(&myreq, reqid);
+	getString(req, "OldPassword", myreq.OldPassword);
+	getString(req, "NewPassword", myreq.NewPassword);
+	int i = this->api->ReqUserPasswordUpdate2(&myreq, reqid);
 	return i;
 };
 
@@ -9243,16 +8983,6 @@ int TdApi::reqQrySecAgentCheckMode(const dict &req, int reqid)
 	return i;
 };
 
-int TdApi::reqQrySecAgentTradeInfo(const dict &req, int reqid)
-{
-	CThostFtdcQrySecAgentTradeInfoField myreq = CThostFtdcQrySecAgentTradeInfoField();
-	memset(&myreq, 0, sizeof(myreq));
-	getString(req, "BrokerID", myreq.BrokerID);
-	getString(req, "BrokerSecAgentID", myreq.BrokerSecAgentID);
-	int i = this->api->ReqQrySecAgentTradeInfo(&myreq, reqid);
-	return i;
-};
-
 int TdApi::reqQryOptionInstrTradeCost(const dict &req, int reqid)
 {
 	CThostFtdcQryOptionInstrTradeCostField myreq = CThostFtdcQryOptionInstrTradeCostField();
@@ -9635,6 +9365,7 @@ int TdApi::reqQueryBankAccountMoneyByFuture(const dict &req, int reqid)
 };
 
 
+
 ///-------------------------------------------------------------------------------------
 ///Boost.Python封装
 ///-------------------------------------------------------------------------------------
@@ -9733,42 +9464,6 @@ public:
 		try
 		{
 			PYBIND11_OVERLOAD(void, TdApi, onRspTradingAccountPasswordUpdate, data, error, reqid, last);
-		}
-		catch (const error_already_set &e)
-		{
-			cout << e.what() << endl;
-		}
-	};
-
-	void onRspUserAuthMethod(const dict &data, const dict &error, int reqid, bool last) override
-	{
-		try
-		{
-			PYBIND11_OVERLOAD(void, TdApi, onRspUserAuthMethod, data, error, reqid, last);
-		}
-		catch (const error_already_set &e)
-		{
-			cout << e.what() << endl;
-		}
-	};
-
-	void onRspGenUserCaptcha(const dict &data, const dict &error, int reqid, bool last) override
-	{
-		try
-		{
-			PYBIND11_OVERLOAD(void, TdApi, onRspGenUserCaptcha, data, error, reqid, last);
-		}
-		catch (const error_already_set &e)
-		{
-			cout << e.what() << endl;
-		}
-	};
-
-	void onRspGenUserText(const dict &data, const dict &error, int reqid, bool last) override
-	{
-		try
-		{
-			PYBIND11_OVERLOAD(void, TdApi, onRspGenUserText, data, error, reqid, last);
 		}
 		catch (const error_already_set &e)
 		{
@@ -10357,18 +10052,6 @@ public:
 		try
 		{
 			PYBIND11_OVERLOAD(void, TdApi, onRspQrySecAgentCheckMode, data, error, reqid, last);
-		}
-		catch (const error_already_set &e)
-		{
-			cout << e.what() << endl;
-		}
-	};
-
-	void onRspQrySecAgentTradeInfo(const dict &data, const dict &error, int reqid, bool last) override
-	{
-		try
-		{
-			PYBIND11_OVERLOAD(void, TdApi, onRspQrySecAgentTradeInfo, data, error, reqid, last);
 		}
 		catch (const error_already_set &e)
 		{
@@ -11145,6 +10828,8 @@ public:
 	};
 
 
+
+
 };
 
 
@@ -11168,12 +10853,8 @@ PYBIND11_MODULE(vnctptd, m)
 		.def("reqUserLogout", &TdApi::reqUserLogout)
 		.def("reqUserPasswordUpdate", &TdApi::reqUserPasswordUpdate)
 		.def("reqTradingAccountPasswordUpdate", &TdApi::reqTradingAccountPasswordUpdate)
-		.def("reqUserAuthMethod", &TdApi::reqUserAuthMethod)
-		.def("reqGenUserCaptcha", &TdApi::reqGenUserCaptcha)
-		.def("reqGenUserText", &TdApi::reqGenUserText)
-		.def("reqUserLoginWithCaptcha", &TdApi::reqUserLoginWithCaptcha)
-		.def("reqUserLoginWithText", &TdApi::reqUserLoginWithText)
-		.def("reqUserLoginWithOTP", &TdApi::reqUserLoginWithOTP)
+		.def("reqUserLogin2", &TdApi::reqUserLogin2)
+		.def("reqUserPasswordUpdate2", &TdApi::reqUserPasswordUpdate2)
 		.def("reqOrderInsert", &TdApi::reqOrderInsert)
 		.def("reqParkedOrderInsert", &TdApi::reqParkedOrderInsert)
 		.def("reqParkedOrderAction", &TdApi::reqParkedOrderAction)
@@ -11223,7 +10904,6 @@ PYBIND11_MODULE(vnctptd, m)
 		.def("reqQryInstrumentOrderCommRate", &TdApi::reqQryInstrumentOrderCommRate)
 		.def("reqQrySecAgentTradingAccount", &TdApi::reqQrySecAgentTradingAccount)
 		.def("reqQrySecAgentCheckMode", &TdApi::reqQrySecAgentCheckMode)
-		.def("reqQrySecAgentTradeInfo", &TdApi::reqQrySecAgentTradeInfo)
 		.def("reqQryOptionInstrTradeCost", &TdApi::reqQryOptionInstrTradeCost)
 		.def("reqQryOptionInstrCommRate", &TdApi::reqQryOptionInstrCommRate)
 		.def("reqQryExecOrder", &TdApi::reqQryExecOrder)
@@ -11254,9 +10934,6 @@ PYBIND11_MODULE(vnctptd, m)
 		.def("onRspUserLogout", &TdApi::onRspUserLogout)
 		.def("onRspUserPasswordUpdate", &TdApi::onRspUserPasswordUpdate)
 		.def("onRspTradingAccountPasswordUpdate", &TdApi::onRspTradingAccountPasswordUpdate)
-		.def("onRspUserAuthMethod", &TdApi::onRspUserAuthMethod)
-		.def("onRspGenUserCaptcha", &TdApi::onRspGenUserCaptcha)
-		.def("onRspGenUserText", &TdApi::onRspGenUserText)
 		.def("onRspOrderInsert", &TdApi::onRspOrderInsert)
 		.def("onRspParkedOrderInsert", &TdApi::onRspParkedOrderInsert)
 		.def("onRspParkedOrderAction", &TdApi::onRspParkedOrderAction)
@@ -11306,7 +10983,6 @@ PYBIND11_MODULE(vnctptd, m)
 		.def("onRspQryInstrumentOrderCommRate", &TdApi::onRspQryInstrumentOrderCommRate)
 		.def("onRspQrySecAgentTradingAccount", &TdApi::onRspQrySecAgentTradingAccount)
 		.def("onRspQrySecAgentCheckMode", &TdApi::onRspQrySecAgentCheckMode)
-		.def("onRspQrySecAgentTradeInfo", &TdApi::onRspQrySecAgentTradeInfo)
 		.def("onRspQryOptionInstrTradeCost", &TdApi::onRspQryOptionInstrTradeCost)
 		.def("onRspQryOptionInstrCommRate", &TdApi::onRspQryOptionInstrCommRate)
 		.def("onRspQryExecOrder", &TdApi::onRspQryExecOrder)
@@ -11372,4 +11048,5 @@ PYBIND11_MODULE(vnctptd, m)
 		.def("onRtnCancelAccountByBank", &TdApi::onRtnCancelAccountByBank)
 		.def("onRtnChangeAccountByBank", &TdApi::onRtnChangeAccountByBank)
 		;
+
 }
