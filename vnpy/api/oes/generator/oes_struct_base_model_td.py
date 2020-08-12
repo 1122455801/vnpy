@@ -20,14 +20,12 @@ OesOrdRejectT = {
 }
 OesOrdCnfmT = {
     "__OES_ORD_CNFM_BASE_INFO_PKT": "dict",
-    "__OES_ORD_CNFM_EXT_INFO_PKT": "dict",
 }
 OesTrdBaseInfoT = {
     "__OES_TRD_BASE_INFO_PKT": "dict",
 }
 OesTrdCnfmT = {
     "__OES_TRD_CNFM_BASE_INFO_PKT": "dict",
-    "__OES_TRD_CNFM_EXT_INFO_PKT": "dict",
 }
 OesLotWinningBaseInfoT = {
     "__OES_LOT_WINNING_BASE_INFO_PKT": "dict",
@@ -75,10 +73,6 @@ OesEtfComponentBaseInfoT = {
 OesCashAssetBaseInfoT = {
     "__OES_CASH_ASSET_BASE_INFO_PKT": "dict",
 }
-OesCashAssetReportT = {
-    "__OES_CASH_ASSET_BASE_INFO_PKT": "dict",
-    "__OES_CASH_ASSET_EXT_INFO_PKT": "dict",
-}
 OesCustBaseInfoT = {
     "__OES_CUST_BASE_INFO_PKT": "dict",
 }
@@ -88,43 +82,34 @@ OesInvAcctBaseInfoT = {
 OesStkHoldingBaseInfoT = {
     "__OES_STK_HOLDING_BASE_INFO_PKT": "dict",
 }
-OesStkHoldingReportT = {
-    "__OES_STK_HOLDING_BASE_INFO_PKT": "dict",
-    "__OES_STK_HOLDING_EXT_INFO_PKT": "dict",
-}
 OesMarketStateInfoT = {
 }
-OesNotifyBaseInfoT = {
-    "__OES_NOTIFY_BASE_INFO_PKT": "dict",
+OesApplUpgradeSourceT = {
+    "ipAddress": "string",
+    "protocol": "string",
+    "username": "string",
+    "password": "string",
+    "encryptMethod": "int32",
+    "__filler": "int32",
+    "homePath": "string",
+    "fileName": "string",
 }
-OesNotifyInfoReportT = {
-    "__OES_NOTIFY_BASE_INFO_PKT": "dict",
+OesApplUpgradeItemT = {
+    "applName": "string",
+    "minApplVerId": "string",
+    "maxApplVerId": "string",
+    "discardApplVerId": "string",
+    "discardVerCount": "int32",
+    "newApplVerDate": "int32",
+    "newApplVerId": "string",
+    "newApplVerTag": "string",
+    "OesApplUpgradeSourceT": "dict",
+    "primarySource": "dict",
+    "OesApplUpgradeSourceT": "dict",
+    "secondarySource": "dict",
 }
-OesOptionBaseInfoT = {
-    "__OES_OPTION_BASE_INFO_PKT": "dict",
-}
-OesOptHoldingBaseInfoT = {
-    "__OES_OPT_HOLDING_BASE_INFO_PKT": "dict",
-}
-OesOptHoldingReportT = {
-    "__OES_OPT_HOLDING_BASE_INFO_PKT": "dict",
-    "__OES_OPT_HOLDING_EXT_INFO_PKT": "dict",
-}
-OesOptUnderlyingHoldingBaseInfoT = {
-    "__OES_OPT_UNDERLYING_HOLDING_BASE_PKT": "dict",
-}
-OesOptUnderlyingHoldingReportT = {
-    "__OES_OPT_UNDERLYING_HOLDING_BASE_PKT": "dict",
-}
-OesOptionPositionLimitBaseInfoT = {
-    "__OES_OPTION_POSITION_LIMIT_BASE_PKT": "dict",
-}
-OesOptionExerciseAssignBaseT = {
-    "__OES_OPTION_EXERCISE_ASSIGN_BASE_PKT": "dict",
-}
-OesOptSettlementConfirmBaseInfoT = {
-    "__OES_OPT_SETTLEMENT_CONFIRM_BASE_PKT": "dict",
-}
-OesOptSettlementConfirmReportT = {
-    "__OES_OPT_SETTLEMENT_CONFIRM_BASE_PKT": "dict",
+OesApplUpgradeInfoT = {
+    "clientUpgradeInfo": "OesApplUpgradeItemT",
+    "cApiUpgradeInfo": "OesApplUpgradeItemT",
+    "javaApiUpgradeInfo": "OesApplUpgradeItemT",
 }

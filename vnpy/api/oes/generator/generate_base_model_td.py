@@ -103,6 +103,9 @@ class Generator:
         for name_ in dir(module_):
             self.subs[name_] = getattr(module_, name_)
 
+        print("struct=", self.structs)
+        print("subs=", self.subs)
+
     def process_line_special(self, line: str):
         """处理每行"""
         line = line.replace("\n", "")
@@ -318,5 +321,5 @@ class Generator:
 
 
 if __name__ == "__main__":
-    generator = Generator("../include/oes/oes_base_model.h", "oes")
-    generator.run()
+    generator = Generator("../include_for_generator/oes/oes_base_model.h", "oes")
+    generator.generate_struct()
