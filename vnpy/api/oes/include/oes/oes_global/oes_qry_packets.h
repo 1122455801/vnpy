@@ -22,7 +22,7 @@
  * @version 0.11.1      2016/11/17
  * @version 0.12        2016/11/30
  *          - 增加客户信息查询功能
- *          - ETF成分股查询应答中增加成分股所属ETF申赎代码
+ *          - ETF成份股查询应答中增加成份股所属ETF申赎代码
  *          - 佣金查询应答中增加客户代码
  *          - 在登录报文中增加协议版本号信息, 并在登录时校验协议版本号的兼容性
  * @version 0.12.1      2016/12/19
@@ -41,10 +41,10 @@
  *          - 客户资金信息(OesCashAssetItemT)中添加字段 '当前冲正金额(红冲蓝补的资金净额, reversalAmt)'
  * @version 0.12.8.2    2017/05/16
  *          - 新增 '证券发行信息查询' 相关报文定义
- *              - 新增结构体 查询证券发行信息过滤条件(OesQryIssueFilterT)
- *              - 新增结构体 证券发行信息内容(OesIssueItemT)
- *              - 新增结构体 查询证券发行信息请求(OesQryIssueReqT)
- *              - 新增结构体 查询证券发行信息应答(OesQryIssueRspT)
+ *              - 新增字段 查询证券发行信息过滤条件(OesQryIssueFilterT)
+ *              - 新增字段 证券发行信息内容(OesIssueItemT)
+ *              - 新增字段 查询证券发行信息请求(OesQryIssueReqT)
+ *              - 新增字段 查询证券发行信息应答(OesQryIssueRspT)
  * @version 0.12.9_RC1  2017/06/05
  *          - 调整佣金查询结果中feeRate字段的精度, 当佣金计算模式为 '按份数' 时,
  *              feeRate 字段所代表的比率单位由 '万分之一' => '百万分之一'
@@ -60,10 +60,10 @@
  *              - 字段重命名 当前可取余额(withdrawAvlAmt => currentDrawableBal)
  * @version 0.15.2      2017/07/18
  *          - 新增 '新股认购、中签信息查询' 相关报文定义
- *              - 新增结构体 查询新股认购、中签信息过滤条件(OesQryLotWinningFilterT)
- *              - 新增结构体 新股认购、中签信息内容(OesLotWinningItemT)
- *              - 新增结构体 查询新股认购、中签信息请求(OesQryLotWinningReqT)
- *              - 新增结构体 查询新股认购、中签信息应答(OesQryLotWinningRspT)
+ *              - 新增字段 查询新股认购、中签信息过滤条件(OesQryLotWinningFilterT)
+ *              - 新增字段 新股认购、中签信息内容(OesLotWinningItemT)
+ *              - 新增字段 查询新股认购、中签信息请求(OesQryLotWinningReqT)
+ *              - 新增字段 查询新股认购、中签信息应答(OesQryLotWinningRspT)
  * @version 0.15.4      2017/09/04
  *          - 查询请求中消息头的类型由 'OesQryHeadT' 改为 'OesQryReqHeadT'
  *          - 查询应答中消息头的类型由 'OesQryHeadT' 改为 'OesQryRspHeadT'
@@ -106,25 +106,25 @@
  *          - 修正 '佣金查询结果 (OesCommissionRateItemT)' 中 feeRate 字段精度描述不正确的问题
  * @version 0.15.5.6    2018/04/01
  *          - 新增 '市场状态信息查询' 相关报文定义
- *              - 新增结构体 查询市场状态信息过滤条件(OesQryMarketStateFilterT)
- *              - 新增结构体 市场状态信息内容(OesMarketStateItemT)
- *              - 新增结构体 查询市场状态信息请求(OesQryMarketStateReqT)
- *              - 新增结构体 查询市场状态信息应答(OesQryMarketStateRspT)
+ *              - 新增字段 查询市场状态信息过滤条件(OesQryMarketStateFilterT)
+ *              - 新增字段 市场状态信息内容(OesMarketStateItemT)
+ *              - 新增字段 查询市场状态信息请求(OesQryMarketStateReqT)
+ *              - 新增字段 查询市场状态信息应答(OesQryMarketStateRspT)
  * @version 0.15.5.14   2018/08/01
  *          - '现货产品信息查询过滤条件(OesQryStockFilterT)' 中新增字段:
  *              - 证券类别(securityType)
  *              - 证券子类别(subSecurityType)
  * @version 0.15.5.16   2018/08/31
  *          - 新增 '查询客户端总览信息' 相关报文定义
- *              - 新增结构体 股东账户总览信息(OesInvAcctOverviewT)
- *              - 新增结构体 资金账户总览信息(OesCashAcctOverviewT)
- *              - 新增结构体 客户总览信息(OesCustOverviewT)
- *              - 新增结构体 客户端总览信息(OesClientOverviewT)
- *              - 新增结构体 主柜资金信息(OesCounterCashItemT)
+ *              - 新增 股东账户总览信息(OesInvAcctOverviewT)
+ *              - 新增 资金账户总览信息(OesCashAcctOverviewT)
+ *              - 新增 客户总览信息(OesCustOverviewT)
+ *              - 新增 客户端总览信息(OesClientOverviewT)
+ *              - 新增 主柜资金信息(OesCounterCashItemT)
  *          - 新增 '查询主柜资金信息' 相关报文定义
- *              - 新增结构体 查询主柜资金信息请求(OesQryCounterCashReqT)
- *              - 新增结构体 查询主柜资金信息应答(OesQryCounterCashRspT)
- *              - 新增结构体 主柜资金信息内容(OesCounterCashItemT)
+ *              - 新增 查询主柜资金信息请求(OesQryCounterCashReqT)
+ *              - 新增 查询主柜资金信息应答(OesQryCounterCashRspT)
+ *              - 新增 主柜资金信息内容(OesCounterCashItemT)
  *          - '客户资金信息内容(OesCashAssetItemT)' 中新增 是否禁止出入金(isFundTrsfDisabled) 字段
  *          - '证券账户信息内容(OesInvAcctItemT)' 中新增 是否禁止交易(isTradeDisabled) 字段
  * @version 0.15.5.16_u3 2018/09/28
@@ -186,56 +186,52 @@
  *              - 新增 当日最大可减持额度 (maxReduceQuota) 字段
  *          - '客户端总览信息内容 (OesClientOverviewT)' 中
  *              - 新增 客户端适用的业务范围 (businessScope) 字段
- * @version 0.16        2019/01/18
- *          - '股票持仓信息 (OesStkHoldingItemT)'中
- *              - 删除 当前已锁定持仓 (lockHld) 字段
- *              - 删除 当前锁定冻结持仓 (lockFrzHld) 字段
- *              - 删除 当前解锁定冻结持仓数量 (unlockFrzHld) 字段
- *              - 删除 当前备兑冻结的现货持仓数量 (coveredFrzHld) 字段
- *              - 删除 当前已备兑使用的现货持仓数量 (coveredHld) 字段
- *              - 删除 当前可用于备兑的现货持仓 (coveredAvlHld) 字段
- *              - 新增 日初可用持仓 (originalAvlHld) 字段
- *              - 新增 日初锁定持仓 (originalLockHld) 字段
- *              - 新增 日中累计锁定持仓 (totalLockHld) 字段
- *              - 新增 日中累计解锁持仓 (totalUnlockHld) 字段
- *          - '客户资金信息 (OesCashAssetItemT)' 中
- *              - 新增 日初持仓占用保证金 (initialMargin) 字段
- *              - 新增 行权待交收冻结资金 (totalExerciseFrzAmt) 字段
- *              - 新增 待追加保证金 (pendingSupplMargin) 字段
- *              - 新增 上海市场可用限购额度 (sseAvailablePurchaseLimit) 字段
- *              - 新增 深圳市场可用限购额度 (szseAvailablePurchaseLimit) 字段
- *          - 新增 '通知消息查询' 相关报文定义
- *              - 新增结构体 查询通知消息过滤条件(OesQryNotifyInfoFilterT)
- *              - 新增结构体 通知消息内容(OesNotifyInfoItemT)
- *              - 新增结构体 查询通知消息请求(OesQryNotifyInfoReqT)
- *              - 新增结构体 查询通知消息应答(OesQryNotifyInfoRspT)
- *          - 新增 '期权限仓额度查询' 相关报文定义
- *              - 新增结构体 查询期权限仓额度消息过滤条件(OesQryOptPositionLimitFilterT)
- *              - 新增结构体 期权限仓额度信息内容(OesOptPositionLimitItemT)
- *              - 新增结构体 查询期权限仓额度消息请求(OesQryOptPositionLimitReqT)
- *              - 新增结构体 查询期权限仓额度消息应答(OesQryOptPositionLimitRspT)
- *          - 新增 '期权限购额度信息查询' 相关报文定义
- *              - 新增结构体 查询期权限购额度信息过滤条件(OesQryOptPurchaseLimitFilterT)
- *              - 新增结构体 期权限购额度信息内容(OesOptPurchaseLimitItemT)
- *              - 新增结构体 查询期权限购额度信息请求(OesQryOptPurchaseLimitReqT)
- *              - 新增结构体 查询期权限购额度信息应答(OesQryOptPurchaseLimitRspT)
- *          - 新增 '期权行权指派查询' 相关报文定义
- *              - 新增结构体 查询期权行权指派消息过滤条件(OesQryOptExerciseAssignFilterT)
- *              - 新增结构体 期权行权指派信息内容(OesOptxerciseAssignItemT)
- *              - 新增结构体 查询期权行权指派消息请求(OesQryOptExerciseAssignReqT)
- *              - 新增结构体 查询期权行权指派消息应答(OesQryOptExerciseAssignRspT)
- * @version 0.16.0.2    2020/01/03
- *          - '券商参数信息 (OesBrokerParamsInfoT)' 中
- *              - 新增 服务端业务范围 (businessScope) 字段
- *              - 新增 期权扩展参数 (optionExt) 结构, 其中新增 投资人出金提取线 (withdrawLineRatio) 字段
- *          - '期权行权指派信息 (OesOptExerciseAssignItemT)'中
- *              - 新增 期权合约名称 (securityName) 字段
- * @version 0.16.0.4    2020/02/28
- *          - '期权标的持仓信息 (OesOptUnderlyingHoldingItemT)'中
- *              - 新增 当日最大可减持额度 (maxReduceQuota) 字段
- *          - '客户资金信息 (OesCashAssetItemT)' 中
- *              - 新增 未对冲实时价格保证金 (totalMarketMargin) 字段
- *              - 新增 已对冲实时价格保证金 (totalNetMargin) 字段
+ * @version 0.15.11     2020/05/29
+ *          - 为了支持创业版, 扩展以下查询结果
+ *              - 现货产品信息 (OesStockItemT) 中:
+ *                  - 新增 证券状态 (securityStatus) 字段
+ *                  - 新增 证券属性 (securityAttribute) 保留字段
+ *                  - 新增 是否注册制 (isRegistration) 字段
+ *                  - 新增 是否为融资标的 (isCrdMarginTradeUnderlying) 字段
+ *                  - 新增 是否为融券标的 (isCrdShortSellUnderlying) 字段
+ *                  - 新增 是否为融资融券担保品 (isCrdCollateral) 字段
+ *                  - 新增 是否尚未盈利 (isNoProfit) 字段
+ *                  - 新增 是否存在投票权差异 (isWeightedVotingRights) 字段
+ *                  - 新增 是否具有协议控制框架 (isVie) 字段
+ *                  - 重构 限价买入单位 (lmtBuyQtyUnit) 字段, 增加新的别名
+ *                      - buyQtyUnit => lmtBuyQtyUnit
+ *                  - 重构 限价卖出单位 (lmtSellQtyUnit) 字段, 增加新的别名
+ *                      - sellQtyUnit => lmtSellQtyUnit
+ *                  - 新增 市价买入单位 (mktBuyQtyUnit) 字段
+ *                  - 新增 市价卖出单位 (mktSellQtyUnit) 字段
+ *                  - 重构 面值 (parPrice) 字段, 增加新的别名  (兼容之前版本的API)
+ *                      - parPrice => parValue
+ *                  - 新增 连续竞价范围限制类型 (auctionLimitType) 字段
+ *                  - 新增 连续竞价范围基准价类型 (auctionReferPriceType) 字段
+ *                  - 新增 连续竞价范围涨跌幅度 (auctionUpDownRange) 字段
+ *                  - 新增 上市日期 (listDate) 字段
+ *                  - 新增 到期日期 (maturityDate) 字段
+ *                  - 新增 基础证券代码 (underlyingSecurityId) 字段
+ *              - 证券发行信息 (OesIssueItemT) 中:
+ *                  - 新增 是否注册制 (isRegistration) 字段
+ *                  - 新增 证券属性 (securityAttribute) 保留字段
+ *                  - 新增 是否尚未盈利 (isNoProfit) 字段
+ *                  - 新增 是否存在投票权差异 (isWeightedVotingRights) 字段
+ *                  - 新增 是否具有协议控制框架 (isVie) 字段
+ *                  - 新增 配股股权登记日 (alotRecordDay) 字段
+ *                  - 新增 配股股权除权日 (alotExRightsDay) 字段
+ *          - 调整查询ETF成份证券信息接口
+ *              - 查询ETF成份证券信息过滤条件 (OesQryEtfComponentFilterT) 中:
+ *                  - 查询条件 ETF基金申赎代码 (fundId) 不再是必填项
+ *                  - 新增查询条件 ETF基金市场代码 (fundMktId)
+ *              - 'ETF基金成份证券信息 (OesEtfComponentItemT)' 中:
+ *                  - 新增 ETF基金市场代码 (fundMktId) 字段
+ *                  - 新增 是否是作为申赎对价的成份证券 (isTrdComponent) 字段
+ *                  - 新增 赎回折价比例 (discountRatio) 字段
+ *                  - 新增 成份证券名称 (securityName) 字段
+ *                  - 重构 申购溢价比例、赎回替代金额 字段命名, 为这些字段增加新的别名 (兼容之前版本的API)
+ *                      - premiumRate => premiumRatio
+ *                      - redemptionCashSub => redemptionSubCash
  *
  * @since   2015/07/30
  */
@@ -294,7 +290,7 @@ extern "C" {
 /** 每条查询应答报文中ETF申赎产品信息的最大数量 */
 #define OES_MAX_ETF_ITEM_CNT_PER_PACK               (30)
 
-/** 每条查询应答报文中ETF成分股的最大数量 */
+/** 每条查询应答报文中ETF成份证券的最大数量 */
 #define OES_MAX_ETF_COMPONENT_ITEM_CNT_PER_PACK     (30)
 
 /** 每条查询应答报文中期权产品的最大数量 */
@@ -302,18 +298,6 @@ extern "C" {
 
 /** 每条查询应答报文中市场状态的最大数量 */
 #define OES_MAX_MKT_STATE_ITEM_CNT_PER_PACK         (30)
-
-/** 每条查询应答报文中通知消息的最大数量 */
-#define OES_MAX_NOTIFY_INFO_ITEM_CNT_PER_PACK       (30)
-
-/** 每条查询应答报文中期权标的信息的最大数量 */
-#define OES_MAX_OPT_UNDERLYING_ITEM_CNT_PER_PACK    (30)
-
-/** 每条查询应答报文中期权限购额度信息的最大数量 */
-#define OES_MAX_OPT_PURCHASE_LIMIT_ITEM_CNT_PER_PACK    \
-                                                    (30)
-/** 每条查询应答报文中期权行权指派信息的最大数量 */
-#define OES_MAX_EXERCISE_ASSIGN_ITEM_CNT_PER_PACK   (30)
 
 /** 客户端对应的最大客户数量 */
 #define OES_MAX_CUST_PER_CLIENT                     (1)
@@ -617,14 +601,23 @@ typedef struct _OesQryCashAssetFilter {
  */
 typedef struct _OesCashAssetItem {
     __OES_CASH_ASSET_BASE_INFO_PKT;
-    __OES_CASH_ASSET_EXT_INFO_PKT;
+
+    /**
+     * 当前余额, 包括当前可用余额和在途冻结资金在內的汇总值
+     * 可用余额请参考“当前可用余额(currentAvailableBal)”字段
+     */
+    int64               currentTotalBal;
+    /** 当前可用余额 */
+    int64               currentAvailableBal;
+    /** 当前可取余额 */
+    int64               currentDrawableBal;
 } OesCashAssetItemT;
 
 
 /* 结构体的初始化值定义 */
 #define NULLOBJ_OES_CASH_ASSET_ITEM                     \
         __NULLOBJ_OES_CASH_ASSET_BASE_INFO_PKT, \
-        __NULLOBJ_OES_CASH_ASSET_EXT_INFO_PKT
+        0, 0, 0
 /* -------------------------           */
 
 
@@ -665,7 +658,7 @@ typedef struct _OesQryCashAssetRsp {
 
 
 /* ===================================================================
- * 查询主柜资金信息相关结构体定义
+ * 查询资金信息相关结构体定义
  * =================================================================== */
 
 /**
@@ -691,7 +684,7 @@ typedef struct _OesCounterCashItem {
     int64               counterDrawableBal;     /**< 主柜可取余额，单位精确到元后四位，即1元 = 10000 */
     int64               counterCashUpdateTime;  /**< 主柜资金更新时间 (seconds since the Epoch) */
 
-    char                __reserve[32];          /**< 保留字段 */
+    int64               __reserve[4];           /**< 保留字段 */
 } OesCounterCashItemT;
 
 
@@ -699,8 +692,7 @@ typedef struct _OesCounterCashItem {
 #define NULLOBJ_OES_COUNTER_CASH_ITEM                   \
         {0}, {0}, {0}, {0}, \
         0, 0, 0, 0, {0}, \
-        0, 0, 0, \
-        {0}
+        0, 0, 0, {0}
 /* -------------------------           */
 
 
@@ -775,14 +767,29 @@ typedef struct _OesQryStkHoldingFilter {
  */
 typedef struct _OesStkHoldingItem {
     __OES_STK_HOLDING_BASE_INFO_PKT;
-    __OES_STK_HOLDING_EXT_INFO_PKT;
+
+    /** 当前可卖持仓 */
+    int64               sellAvlHld;
+    /** 当前可转换付出持仓 */
+    int64               trsfOutAvlHld;
+    /** 当前可锁定持仓 */
+    int64               lockAvlHld;
+    /** 保留字段 */
+    int64               __filler;
+    /**
+     * 总持仓, 包括当前可用持仓、不可交易持仓和在途冻结持仓在內的汇总值
+     * 可卖持仓请参考“当前可卖持仓(sellAvlHld)”字段
+     */
+    int64               sumHld;
+    /** 持仓成本价 */
+    int64               costPrice;
 } OesStkHoldingItemT;
 
 
 /* 结构体的初始化值定义 */
 #define NULLOBJ_OES_STK_HOLDING_ITEM                    \
         __NULLOBJ_OES_STK_HOLDING_BASE_INFO_PKT, \
-        __NULLOBJ_OES_STK_HOLDING_EXT_INFO_PKT
+        0, 0, 0, 0, 0, 0
 /* -------------------------           */
 
 
@@ -809,7 +816,7 @@ typedef struct _OesQryStkHoldingReq {
  */
 typedef struct _OesQryStkHoldingRsp {
     /** 查询应答消息头 */
-    OesQryRspHeadT          rspHead;
+    OesQryRspHeadT          qryHead;
     /** 持仓信息数组 */
     OesStkHoldingItemT      qryItems[OES_MAX_HOLDING_ITEM_CNT_PER_PACK];
 } OesQryStkHoldingRspT;
@@ -820,101 +827,6 @@ typedef struct _OesQryStkHoldingRsp {
         {NULLOBJ_OES_QRY_RSP_HEAD}, \
         {{NULLOBJ_OES_STK_HOLDING_ITEM}}
 /* -------------------------           */
-
-
-/* ===================================================================
- * 查询期权持仓信息相关结构体定义
- * =================================================================== */
-
-/**
- * 查询期权持仓信息过滤条件
- */
-typedef struct _OesQryOptHoldingFilter {
-    /** 客户代码, 可选项 */
-    char                custId[OES_CUST_ID_MAX_LEN];
-    /** 证券账户代码, 可选项 */
-    char                invAcctId[OES_INV_ACCT_ID_MAX_LEN];
-    /** 证券代码, 可选项 */
-    char                securityId[OES_SECURITY_ID_MAX_LEN];
-
-    /** 市场代码 @see eOesMarketIdT */
-    uint8               mktId;
-    /** 持仓类型 @see eOesOptPositionTypeT */
-    uint8               positionType;
-    /** 按64位对齐填充域 */
-    uint8               __filler[6];
-
-    /** 用户私有信息 (由客户端自定义填充, 并在应答数据中原样返回) */
-    int64               userInfo;
-} OesQryOptHoldingFilterT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_HOLDING_FILTER              \
-        {0}, {0}, {0}, \
-        0, 0, {0}, 0
-/* -------------------------           */
-
-
-/**
- * 查询到的期权持仓信息内容
- */
-typedef struct _OesOptHoldingItem {
-    __OES_OPT_HOLDING_BASE_INFO_PKT;
-    __OES_OPT_HOLDING_EXT_INFO_PKT;
-
-    /** 交易所合约代码 */
-    char                contractId[OES_CONTRACT_EXCH_ID_MAX_LEN];
-    /** 期权合约简称 */
-    char                contractSymbol[OES_SECURITY_NAME_MAX_LEN];
-    /** 昨结算价 */
-    int64               prevSettlPrice;
-} OesOptHoldingItemT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_OPT_HOLDING_ITEM                    \
-        __NULLOBJ_OES_OPT_HOLDING_BASE_INFO_PKT, \
-        __NULLOBJ_OES_OPT_HOLDING_EXT_INFO_PKT, \
-        {0}, {0}, 0
-/* -------------------------           */
-
-
-/**
- * 查询期权持仓信息请求
- */
-typedef struct _OesQryOptHoldingReq {
-    /** 查询请求消息头 */
-    OesQryReqHeadT              reqHead;
-    /** 查询过滤条件 */
-    OesQryOptHoldingFilterT     qryFilter;
-} OesQryOptHoldingReqT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_HOLDING_REQ                 \
-        {NULLOBJ_OES_QRY_REQ_HEAD}, \
-        {NULLOBJ_OES_QRY_OPT_HOLDING_FILTER}
-/* -------------------------           */
-
-
-/**
- * 查询期权持仓信息应答
- */
-typedef struct _OesQryOptHoldingRsp {
-    /** 查询应答消息头 */
-    OesQryRspHeadT          rspHead;
-    /** 持仓信息数组 */
-    OesOptHoldingItemT      qryItems[OES_MAX_HOLDING_ITEM_CNT_PER_PACK];
-} OesQryOptHoldingRspT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_HOLDING_RSP                 \
-        {NULLOBJ_OES_QRY_RSP_HEAD}, \
-        {{NULLOBJ_OES_OPT_HOLDING_ITEM}}
-/* -------------------------           */
-
 
 
 /* ===================================================================
@@ -1093,7 +1005,7 @@ typedef struct _OesInvAcctOverview {
     uint8               status;
     /** 股东账户的所有者类型 @see eOesOwnerTypeT */
     uint8               ownerType;
-    /** 期权投资者级别 @see eOesOptInvLevelT */
+    /** 投资者期权等级 @see eOesOptInvLevelT */
     uint8               optInvLevel;
     /** 是否禁止交易 (仅供API查询使用) */
     uint8               isTradeDisabled;
@@ -1124,7 +1036,7 @@ typedef struct _OesInvAcctOverview {
     int32               exchRejectOrdCnt;       /**< 当日累计被交易所拒绝的委托笔数统计 */
     int32               trdCnt;                 /**< 当日累计成交笔数统计 */
 
-    char                __reserve[8];           /**< 备用字段 */
+    int64               __reserve;              /**< 备用字段 */
 } OesInvAcctOverviewT;
 
 
@@ -1137,7 +1049,7 @@ typedef struct _OesInvAcctOverview {
         {0}, \
         0, {0}, 0, \
         0, 0, 0, 0, 0, 0, \
-        {0}
+        0
 /* -------------------------           */
 
 
@@ -1159,7 +1071,7 @@ typedef struct _OesCashAcctOverview {
     uint8               isFundTrsfDisabled;     /**< 出入金是否禁止标识 */
     uint8               __filler[3];            /**< 按64位对齐的填充域 */
 
-    char                __reserve[8];           /**< 备用字段 */
+    int64               __reserve;              /**< 备用字段 */
 } OesCashAcctOverviewT;
 
 
@@ -1167,7 +1079,7 @@ typedef struct _OesCashAcctOverview {
 #define NULLOBJ_OES_CASH_ACCT_OVERVIEW                  \
         {0}, {0}, {0}, \
         0, 0, 0, 0, 0, {0}, \
-        {0}
+        0
 /* -------------------------           */
 
 
@@ -1189,7 +1101,7 @@ typedef struct _OesCustOverview {
     OesInvAcctOverviewT     szSpotInvAcct;          /**< 深圳现货股东账户信息 */
     OesInvAcctOverviewT     szOptionInvAcct;        /**< 深圳衍生品股东账户信息 */
 
-    char                    __reserve[8];           /**< 备用字段 */
+    int64                   __reserve;              /**< 备用字段 */
 } OesCustOverviewT;
 
 
@@ -1203,7 +1115,7 @@ typedef struct _OesCustOverview {
         {NULLOBJ_OES_INV_ACCT_OVERVIEW}, \
         {NULLOBJ_OES_INV_ACCT_OVERVIEW}, \
         {NULLOBJ_OES_INV_ACCT_OVERVIEW}, \
-        {0}
+        0
 /* -------------------------           */
 
 
@@ -1244,7 +1156,7 @@ typedef struct _OesClientOverview {
 
     int32               ordTrafficLimit;        /**< 委托通道的流量控制 */
     int32               qryTrafficLimit;        /**< 查询通道的流量控制 */
-    char                __reserve[8];           /**< 备用字段 */
+    int64               __reserve;              /**< 备用字段 */
 
     int32               associatedCustCnt;      /**< 客户端关联的客户数量 */
     int32               __filler4;              /**< 按64位对齐的填充域 */
@@ -1261,7 +1173,7 @@ typedef struct _OesClientOverview {
         0, 0, 0, {0}, \
         0, 0, 0, {0}, \
         0, 0, 0, 0, 0, 0, \
-        0, 0, {0}, \
+        0, 0, 0, \
         0, 0, \
         {{NULLOBJ_OES_CUST_OVERVIEW}}
 /* -------------------------           */
@@ -1486,7 +1398,7 @@ typedef struct _OesQryLotWinningFilter {
      */
     uint8               mktId;
     /**
-     * 查询记录类型, 可选项。如无需此过滤条件请使用 OES_LOT_TYPE_UNDEFINE
+     * 中签、配号记录类型, 可选项。如无需此过滤条件请使用 OES_LOT_TYPE_UNDEFINE
      * @see eOesLotTypeT
      */
     uint8               lotType;
@@ -1734,11 +1646,11 @@ typedef struct _OesQryStockRsp {
  * 查询ETF申赎产品信息过滤条件
  */
 typedef struct _OesQryEtfFilter {
-    /** 基金代码, 可选项 */
+    /** ETF基金申赎代码, 可选项 */
     char                fundId[OES_SECURITY_ID_MAX_LEN];
 
     /**
-     * 市场代码, 可选项。如无需此过滤条件请使用 OES_MKT_ID_UNDEFINE
+     * ETF基金市场代码, 可选项。如无需此过滤条件请使用 OES_MKT_ID_UNDEFINE
      * @see eOesMarketIdT
      */
     uint8               mktId;
@@ -1805,15 +1717,23 @@ typedef struct _OesQryEtfRsp {
 
 
 /* ===================================================================
- * 查询Etf成分股信息相关结构体定义
+ * 查询ETF成份证券信息相关结构体定义
  * =================================================================== */
 
 /**
- * 查询Etf成分股信息过滤条件
+ * 查询ETF成份证券信息过滤条件
  */
 typedef struct _OesQryEtfComponentFilter {
-    /** ETF基金代码, 必填项 */
+    /** ETF基金申赎代码 */
     char                fundId[OES_SECURITY_ID_MAX_LEN];
+
+    /**
+     * ETF基金市场代码, 可选项。如无需此过滤条件请使用 OES_MKT_ID_UNDEFINE
+     * @see eOesMarketIdT
+     */
+    uint8               fundMktId;
+    /** 按64位对齐填充域 */
+    uint8               __filler[7];
 
     /** 用户私有信息 (由客户端自定义填充, 并在应答数据中原样返回) */
     int64               userInfo;
@@ -1822,51 +1742,32 @@ typedef struct _OesQryEtfComponentFilter {
 
 /* 结构体的初始化值定义 */
 #define NULLOBJ_OES_QRY_ETF_COMPONENT_FILTER            \
-        {0}, 0
+        {0}, 0, {0}, 0
 /* -------------------------           */
 
 
 /**
- * EtfComponent成分股信息内容
+ * ETF基金成份证券信息内容
  */
 typedef struct _OesEtfComponentItem {
-    /** Etf成分股代码 */
-    char                securityId[OES_SECURITY_ID_MAX_LEN];
-    /** 市场代码 @see eOesMarketIdT */
-    uint8               mktId;
-    /** 现金替代标识 @see eOesEtfSubFlagT */
-    uint8               subFlag;
-    /** 证券类型 @see eOesSecurityTypeT */
-    uint8               securityType;
-    /** 证券子类型 @see eOesSubSecurityTypeT */
-    uint8               subSecurityType;
+    __OES_ETF_COMPONENT_BASE_INFO_PKT;
 
-    /** 昨日收盘价格 */
-    int32               prevClose;
-    /** 成分证券数量 */
-    int32               qty;
-    /** 溢价比例, 单位精确到十万分之一, 即溢价比例10% = 10000 */
-    int32               premiumRate;
-
-    /** 申购替代金额, 单位精确到元后四位, 即1元 = 10000 */
-    int64               creationSubCash;
-    /** 赎回替代金额, 单位精确到元后四位, 即1元 = 10000 */
-    int64               redemptionCashSub;
-    /** 成分股所属ETF的基金代码 */
-    char                fundId[OES_SECURITY_ID_MAX_LEN];
+    /** 成份证券名称 */
+    char                securityName[OES_SECURITY_NAME_MAX_LEN];
+    /** 预留的备用字段 */
+    char                __reserve[96];
 } OesEtfComponentItemT;
 
 
 /* 结构体的初始化值定义 */
 #define NULLOBJ_OES_ETF_COMPONENET_ITEM                 \
-        {0}, 0, 0, 0, 0, \
-        0, 0, 0, \
-        0, 0, {0}
+        __NULLOBJ_OES_ETF_COMPONENT_BASE_INFO_PKT, \
+        {0}, {0}
 /* -------------------------           */
 
 
 /**
- * 查询EtfComponent成分股信息请求
+ * 查询ETF基金成份证券信息请求
  */
 typedef struct _OesQryEtfComponentReq {
     /** 查询请求消息头 */
@@ -1884,12 +1785,12 @@ typedef struct _OesQryEtfComponentReq {
 
 
 /**
- * 查询EtfComponent成分股信息应答
+ * 查询ETF基金成份证券信息应答
  */
 typedef struct _OesQryEtfComponentRsp {
     /** 查询应答消息头 */
     OesQryRspHeadT      rspHead;
-    /** EtfComponent成分股信息数组 */
+    /** ETF基金成份证券信息数组 */
     OesEtfComponentItemT
                         qryItems[OES_MAX_ETF_COMPONENT_ITEM_CNT_PER_PACK];
 } OesQryEtfComponentRspT;
@@ -1899,490 +1800,6 @@ typedef struct _OesQryEtfComponentRsp {
 #define NULLOBJ_OES_QRY_ETF_COMPONENT_RSP               \
         {NULLOBJ_OES_QRY_RSP_HEAD}, \
         {{NULLOBJ_OES_ETF_COMPONENET_ITEM}}
-/* -------------------------           */
-
-
-/* ===================================================================
- * 查询期权产品信息相关结构体定义
- * =================================================================== */
-
-/**
- * 查询期权产品信息过滤条件
- */
-typedef struct _OesQryOptionFilter {
-    /** 证券代码, 可选项 */
-    char                securityId[OES_SECURITY_ID_MAX_LEN];
-
-    /**
-     * 市场代码, 可选项。如无需此过滤条件请使用 OES_MKT_ID_UNDEFINE
-     * @see eOesMarketIdT
-     */
-    uint8               mktId;
-    /** 按64位对齐填充域 */
-    uint8               __filler[7];
-
-    /** 用户私有信息 (由客户端自定义填充, 并在应答数据中原样返回) */
-    int64               userInfo;
-} OesQryOptionFilterT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPTION_FILTER                   \
-        {0}, 0, {0}, 0
-/* -------------------------           */
-
-
-/**
- * 期权产品信息内容
- */
-typedef OesOptionBaseInfoT      OesOptionItemT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_OPTION_ITEM                         \
-        NULLOBJ_OES_OPTION_BASE_INFO
-/* -------------------------           */
-
-
-/**
- * 查询期权产品信息请求
- */
-typedef struct _OesQryOptionReq {
-    /** 查询请求消息头 */
-    OesQryReqHeadT      reqHead;
-    /** 查询过滤条件 */
-    OesQryOptionFilterT qryFilter;
-} OesQryOptionReqT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPTION_REQ                      \
-        {NULLOBJ_OES_QRY_REQ_HEAD}, \
-        {NULLOBJ_OES_QRY_OPTION_FILTER}
-/* -------------------------           */
-
-
-/**
- * 查询期权产品信息应答
- */
-typedef struct _OesQryOptionRsp {
-    /** 查询应答消息头 */
-    OesQryRspHeadT      rspHead;
-    /** 期权产品信息数组 */
-    OesOptionItemT      qryItems[OES_MAX_OPTION_ITEM_CNT_PER_PACK];
-} OesQryOptionRspT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPTION_RSP                      \
-        {NULLOBJ_OES_QRY_RSP_HEAD}, \
-        {{NULLOBJ_OES_OPTION_ITEM}}
-/* -------------------------           */
-
-
-/* ===================================================================
- * 查询期权标的持仓信息相关结构体定义
- * =================================================================== */
-
-/**
- * 查询期权标的持仓信息过滤条件
- */
-typedef struct _OesQryOptUnderlyingHoldingFilter {
-    /** 客户代码, 可选项 */
-    char                custId[OES_CUST_ID_MAX_LEN];
-    /** 证券账户代码, 可选项 */
-    char                invAcctId[OES_INV_ACCT_ID_MAX_LEN];
-    /** 标的证券代码, 可选项 */
-    char                underlyingSecurityId[OES_SECURITY_ID_MAX_LEN];
-
-    /** 市场代码  @see eOesMarketIdT */
-    uint8               mktId;
-    /** 证券类别  @see eOesSecurityTypeT */
-    uint8               underlyingSecurityType;
-    /** 按64位对齐填充域 */
-    uint8               __filler[6];
-
-    /** 用户私有信息 (由客户端自定义填充, 并在应答数据中原样返回) */
-    int64               userInfo;
-} OesQryOptUnderlyingHoldingFilterT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_UNDERLYING_HOLDING_FILTER   \
-        {0}, {0}, {0}, \
-        0, 0, {0}, 0
-/* -------------------------           */
-
-
-/**
- * 查询到的期权标的持仓信息内容
- */
-typedef OesOptUnderlyingHoldingBaseInfoT    OesOptUnderlyingHoldingItemT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_OPT_UNDERLYING_HOLDING_ITEM         \
-        NULLOBJ_OES_OPT_UNDERLYING_HOLDING_BASE_INFO
-/* -------------------------           */
-
-
-/**
- * 查询期权标的持仓信息请求
- */
-typedef struct _OesQryOptUnderlyingHoldingReq {
-    /** 查询请求消息头 */
-    OesQryReqHeadT                      reqHead;
-    /** 查询过滤条件 */
-    OesQryOptUnderlyingHoldingFilterT   qryFilter;
-} OesQryOptUnderlyingHoldingReqT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_UNDERLYING_HOLDING_REQ      \
-        {NULLOBJ_OES_QRY_REQ_HEAD}, \
-        {NULLOBJ_OES_QRY_OPT_UNDERLYING_HOLDING_FILTER}
-/* -------------------------           */
-
-
-/**
- * 查询期权标的持仓信息应答
- */
-typedef struct _OesQryOptUnderlyingHoldingRsp {
-    /** 查询应答消息头 */
-    OesQryRspHeadT      rspHead;
-    /** 期权标的持仓信息数组 */
-    OesOptUnderlyingHoldingItemT
-                        qryItems[OES_MAX_HOLDING_ITEM_CNT_PER_PACK];
-} OesQryOptUnderlyingHoldingRspT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_UNDERLYING_HOLDING_RSP      \
-        {NULLOBJ_OES_QRY_RSP_HEAD}, \
-        {{NULLOBJ_OES_OPT_UNDERLYING_HOLDING_ITEM}}
-/* -------------------------           */
-
-
-/* ===================================================================
- * 查询期权限仓额度信息相关结构体定义
- * =================================================================== */
-
-/**
- * 查询期权限仓额度信息过滤条件
- */
-typedef struct _OesQryOptPositionLimitFilter {
-    /** 客户代码, 可选项 */
-    char                custId[OES_CUST_ID_MAX_LEN];
-    /** 证券账户代码, 可选项 */
-    char                invAcctId[OES_INV_ACCT_ID_MAX_LEN];
-    /** 标的证券代码, 可选项 */
-    char                underlyingSecurityId[OES_SECURITY_ID_MAX_LEN];
-
-    /** 市场代码  @see eOesMarketIdT */
-    uint8               mktId;
-    /** 证券类别  @see eOesSecurityTypeT */
-    uint8               underlyingSecurityType;
-    /** 按64位对齐填充域 */
-    uint8               __filler[6];
-
-    /** 用户私有信息 (由客户端自定义填充, 并在应答数据中原样返回) */
-    int64               userInfo;
-} OesQryOptPositionLimitFilterT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_POSITION_LIMIT_FILTER       \
-        {0}, {0}, {0}, \
-        0, 0, {0}, 0
-/* -------------------------           */
-
-
-/**
- * 查询到的期权限仓额度信息内容
- */
-typedef struct _OesOptPositionLimitItem {
-    /** 股东账户代码 (不带'888'编码的原始股东账户代码) */
-    char                invAcctId[OES_INV_ACCT_ID_MAX_LEN];
-    /** 标的证券代码 */
-    char                underlyingSecurityId[OES_SECURITY_ID_MAX_LEN];
-    /** 市场代码 (衍生品市场) @see eOesMarketIdT */
-    uint8               mktId;
-
-    /** 标的市场代码 @see eOesMarketIdT */
-    uint8               underlyingMktId;
-    /** 标的证券类型 @see eOesSecurityTypeT */
-    uint8               underlyingSecurityType;
-    /** 标的证券子类型 @see eOesSubSecurityTypeT */
-    uint8               underlyingSubSecurityType;
-    /** 按64位对齐的填充域 */
-    uint8               __filler1[4];
-
-    /** 权利仓限额 */
-    int32               longPositionLimit;
-    /** 总持仓限额 */
-    int32               totalPositionLimit;
-    /** 单日买入开仓限额 */
-    int32               dailyBuyOpenLimit;
-    /** 按64位对齐的填充域 */
-    int32               __filler2;
-
-    /** 日初权利仓持仓数量 (单位: 张) */
-    int32               originalLongQty;
-    /** 日初义务仓持仓数量 (单位: 张) */
-    int32               originalShortQty;
-    /** 日初备兑义务仓持仓数量 (单位: 张) */
-    int32               originalCoveredQty;
-
-    /** 未占用的权利仓限额 */
-    int32               availableLongPositionLimit;
-    /** 未占用的总持仓限额 */
-    int32               availableTotalPositionLimit;
-    /** 未占用的单日买入开仓限额 */
-    int32               availableDailyBuyOpenLimit;
-
-    /** 预留的备用字段 */
-    char                __reserve[8];
-} OesOptPositionLimitItemT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_OPT_POSITION_LIMIT_ITEM             \
-        {0}, {0}, \
-        0, 0, 0, 0, {0}, \
-        0, 0, 0, 0, \
-        0, 0, 0, 0, 0, 0, \
-        {0}
-/* -------------------------           */
-
-
-/**
- * 查询期权限仓额度信息请求
- */
-typedef struct _OesQryOptPositionLimitReq {
-    /** 查询请求消息头 */
-    OesQryReqHeadT                      reqHead;
-    /** 查询过滤条件 */
-    OesQryOptPositionLimitFilterT       qryFilter;
-} OesQryOptPositionLimitReqT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_POSITION_LIMIT_REQ          \
-        {NULLOBJ_OES_QRY_REQ_HEAD}, \
-        {NULLOBJ_OES_QRY_OPT_POSITION_LIMIT_FILTER}
-/* -------------------------           */
-
-
-/**
- * 查询期权限仓额度信息应答
- */
-typedef struct _OesQryOptPositionLimitRsp {
-    /** 查询应答消息头 */
-    OesQryRspHeadT      rspHead;
-    /** 期权标的持仓信息数组 */
-    OesOptPositionLimitItemT
-                        qryItems[OES_MAX_OPT_UNDERLYING_ITEM_CNT_PER_PACK];
-} OesQryOptPositionLimitRspT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_POSITION_LIMIT_RSP          \
-        {NULLOBJ_OES_QRY_RSP_HEAD}, \
-        {{NULLOBJ_OES_OPT_POSITION_LIMIT_ITEM}}
-/* -------------------------           */
-
-
-/* ===================================================================
- * 查询限购消息相关结构体定义
- * =================================================================== */
-
-/**
- * 查询期权限购额度信息过滤条件
- */
-typedef struct _OesQryOptPurchaseLimitFilter {
-    /** 客户代码, 可选项 */
-    char                custId[OES_CUST_ID_MAX_LEN];
-    /** 证券账户代码 (不带'888'编码的原始股东账户代码), 可选项 */
-    char                invAcctId[OES_INV_ACCT_ID_MAX_LEN];
-
-    /**
-     * 市场代码 (衍生品市场), 可选项。如无需此过滤条件请使用 OES_MKT_ID_UNDEFINE
-     * @see eOesMarketIdT
-     */
-    uint8               mktId;
-    /** 按64位对齐填充域 */
-    uint8               __filler[7];
-
-    /** 用户私有信息 (由客户端自定义填充, 并在应答数据中原样返回) */
-    int64               userInfo;
-} OesQryOptPurchaseLimitFilterT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_PURCHASE_LIMIT_FILTER       \
-        {0}, {0}, 0, {0}, \
-        0
-/* -------------------------           */
-
-
-/**
- * 期权限购额度信息内容
- */
-typedef struct _OesOptPurchaseLimitItem {
-    /** 客户代码 */
-    char                custId[OES_CUST_ID_MAX_LEN];
-    /** 资金账户代码 */
-    char                cashAcctId[OES_CASH_ACCT_ID_MAX_LEN];
-    /** 股东账户代码 (不带'888'编码的原始股东账户代码) */
-    char                invAcctId[OES_INV_ACCT_ID_MAX_LEN];
-    /** 市场代码 (衍生品市场) @see eOesMarketIdT */
-    uint8               mktId;
-    /** 客户类别 @see eOesCustTypeT */
-    uint8               custType;
-    /** 按64位对齐的填充数据 */
-    uint8               __filler[6];
-
-    /** 限购额度/套保额度 */
-    int64               purchaseLimit;
-    /** 日初占用的期权限购额度 */
-    int64               originalUsedPurchaseAmt;
-    /** 日中累计开仓占用的期权限购额度 */
-    int64               totalOpenPurchaseAmt;
-    /** 当前挂单冻结的期权限购额度 */
-    int64               frzPurchaseAmt;
-    /** 日中累计平仓释放的期权限购额度 */
-    int64               totalClosePurchaseAmt;
-    /** 可用限购额度/套保额度 */
-    int64               availablePurchaseLimit;
-} OesOptPurchaseLimitItemT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_OPT_PURCHASE_LIMIT_ITEM             \
-        {0}, {0}, {0}, 0, 0, {0}, \
-        0, 0, 0, 0, 0, 0
-/* -------------------------           */
-
-
-
-/**
- * 查询到的期权行权指派信息内容
- */
-typedef OesOptionExerciseAssignBaseT    OesOptExerciseAssignItemT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_OPT_EXERCISE_ASSIGN_ITEM            \
-        NULLOBJ_OES_OPTION_EXERCISE_ASSIGN_BASE
-/* -------------------------           */
-
-
-/**
- * 查询期权限购额度信息请求
- */
-typedef struct _OesQryOptPurchaseLimitReq {
-    /** 查询请求消息头 */
-    OesQryReqHeadT          reqHead;
-    /** 查询过滤条件 */
-    OesQryOptPurchaseLimitFilterT
-                            qryFilter;
-} OesQryOptPurchaseLimitReqT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_PURCHASE_LIMIT_REQ          \
-        {NULLOBJ_OES_QRY_REQ_HEAD}, \
-        {NULLOBJ_OES_QRY_OPT_PURCHASE_LIMIT_FILTER}
-/* -------------------------           */
-
-
-/**
- * 查询期权限购额度信息应答
- */
-typedef struct _OesQryOptPurchaseLimitRsp {
-    /** 查询应答消息头 */
-    OesQryRspHeadT          rspHead;
-    /** 通知消息数组 */
-    OesOptPurchaseLimitItemT
-                            qryItems[OES_MAX_OPT_PURCHASE_LIMIT_ITEM_CNT_PER_PACK];
-} OesQryOptPurchaseLimitRspT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_PURCHASE_LIMIT_RSP          \
-        {NULLOBJ_OES_QRY_RSP_HEAD}, \
-        {{NULLOBJ_OES_OPT_PURCHASE_LIMIT_ITEM}}
-/* -------------------------           */
-
-
-/* ===================================================================
- * 查询期权行权指派信息相关结构体定义
- * =================================================================== */
-
-/**
- * 查询期权行权指派信息过滤条件
- */
-typedef struct _OesQryOptExerciseAssignFilter {
-    /** 客户代码, 可选项 */
-    char                custId[OES_CUST_ID_MAX_LEN];
-    /** 证券账户代码, 可选项 */
-    char                invAcctId[OES_INV_ACCT_ID_MAX_LEN];
-    /** 期权合约代码, 可选项 */
-    char                securityId[OES_SECURITY_ID_MAX_LEN];
-
-    /** 市场代码 @see eOesMarketIdT */
-    uint8               mktId;
-    /** 持仓类型 @see eOesOptPositionTypeT */
-    uint8               positionType;
-    /** 按64位对齐填充域 */
-    uint8               __filler[6];
-
-    /** 用户私有信息 (由客户端自定义填充, 并在应答数据中原样返回) */
-    int64               userInfo;
-} OesQryOptExerciseAssignFilterT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_EXERCISE_ASSIGN_FILTER      \
-        {0}, {0}, {0}, \
-        0, 0, {0}, 0
-/* -------------------------           */
-
-
-/**
- * 查询期权行权指派信息请求
- */
-typedef struct _OesQryOptExerciseAssignReq {
-    /** 查询请求消息头 */
-    OesQryReqHeadT                      reqHead;
-    /** 查询过滤条件 */
-    OesQryOptExerciseAssignFilterT      qryFilter;
-} OesQryOptExerciseAssignReqT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_EXERCISE_ASSIGN_REQ         \
-        {NULLOBJ_OES_QRY_REQ_HEAD}, \
-        {NULLOBJ_OES_QRY_OPT_EXERCISE_ASSIGN_FILTER}
-/* -------------------------           */
-
-
-/**
- * 查询期权行权指派信息应答
- */
-typedef struct _OesQryOptExerciseAssignRsp {
-    /** 查询应答消息头 */
-    OesQryRspHeadT      rspHead;
-    /** 期权行权指派信息数组 */
-    OesOptExerciseAssignItemT
-                        qryItems[OES_MAX_EXERCISE_ASSIGN_ITEM_CNT_PER_PACK];
-} OesQryOptExerciseAssignRspT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_OPT_EXERCISE_ASSIGN_RSP         \
-        {NULLOBJ_OES_QRY_RSP_HEAD}, \
-        {{NULLOBJ_OES_OPT_EXERCISE_ASSIGN_ITEM}}
 /* -------------------------           */
 
 
@@ -2492,64 +1909,6 @@ typedef struct _OesQryMarketStateRsp {
 
 
 /* ===================================================================
- * 查询通知消息相关结构体定义
- * =================================================================== */
-
-/**
- * 查询通知消息过滤条件
- */
-typedef struct _OesQryNotifyInfoFilter {
-    /** 客户代码, 可选项 */
-    char                custId[OES_CUST_ID_MAX_LEN];
-
-    /** 通知消息等级 @see eOesNotifyLevelT */
-    uint8               notifyLevel;
-    /** 按64位对齐填充域 */
-    uint8               __filler[7];
-
-    /** 用户私有信息 (由客户端自定义填充, 并在应答数据中原样返回) */
-    int64               userInfo;
-} OesQryNotifyInfoFilterT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_NOTIFY_INFO_FILTER              \
-        {0}, 0, {0}, 0
-/* -------------------------           */
-
-
-/**
- * 通知消息内容
- */
-typedef OesNotifyBaseInfoT  OesNotifyInfoItemT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_NOTIFY_INFO_ITEM                    \
-        NULLOBJ_OES_NOTIFY_BASE_INFO
-/* -------------------------           */
-
-
-/**
- * 查询通知消息请求
- */
-typedef struct _OesQryNotifyInfoReq {
-    /** 查询请求消息头 */
-    OesQryReqHeadT          reqHead;
-    /** 查询过滤条件 */
-    OesQryNotifyInfoFilterT
-                            qryFilter;
-} OesQryNotifyInfoReqT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_NOTIFY_INFO_REQ                 \
-        {NULLOBJ_OES_QRY_REQ_HEAD}, \
-        {NULLOBJ_OES_QRY_NOTIFY_INFO_FILTER}
-/* -------------------------           */
-
-
-/* ===================================================================
  * 查询券商参数信息相关结构体定义
  * =================================================================== */
 
@@ -2565,11 +1924,17 @@ typedef struct _OesBrokerParamsInfo {
     char                brokerWebsite[OES_BROKER_WEBSITE_MAX_LEN];
 
     /** 当前API协议版本号 */
-    char                apiVersion[OES_MAX_VERSION_LEN];
+    char                apiVersion[OES_VER_ID_MAX_LEN];
+    /** 为兼容协议而添加的填充域 */
+    char               __filler1[8];
     /** API兼容的最低协议版本号 */
-    char                apiMinVersion[OES_MAX_VERSION_LEN];
+    char                apiMinVersion[OES_VER_ID_MAX_LEN];
+    /** 为兼容协议而添加的填充域 */
+    char               __filler2[8];
     /** 客户端最新的版本号 */
-    char                clientVersion[OES_MAX_VERSION_LEN];
+    char                clientVersion[OES_VER_ID_MAX_LEN];
+    /** 为兼容协议而添加的填充域 */
+    char               __filler3[8];
 
     /** 允许客户端修改密码的开始时间 (HHMMSSsss) */
     int32               changePwdLimitTime;
@@ -2580,60 +1945,52 @@ typedef struct _OesBrokerParamsInfo {
      * 密码强度范围[0~4]，密码含有字符种类(大写字母、小写字母、数字、有效符号)的个数
      */
     int32               clientPasswordStrength;
-    /** 服务端业务范围 @see eOesBusinessScopeT */
-    uint32              businessScope;
+    /** 按64位对齐填充域 */
+    uint8               __filler4[4];
 
     /** 预留的备用字段 */
-    char                __reserve[64];
-
-    /** 业务范围扩展信息 */
-    union {
-        struct {
-            int32       withdrawLineRatio;      /**< 投资人出金提取线 (万分比) */
-            int32       __filler;               /**< 按64位对齐填充域 */
-        } optionExt;
-
-        char            __extInfo[192];         /**< 占位用的扩展信息 */
-    };
+    char                __reserve[256];
 } OesBrokerParamsInfoT;
 
 
 /* 结构体的初始化值定义 */
 #define NULLOBJ_OES_BROKER_PARAMS_INFO                  \
         {0}, {0}, {0}, \
-        {0}, {0}, {0}, \
-        0, 0, 0, 0, \
-        {0}, {{0, 0}}
+        {0}, {0}, {0}, {0}, {0}, {0}, \
+        0, 0, 0, {0}, \
+        {0}
+/* -------------------------           */
+
 
 /**
-* 查询券商参数信息应答
-*/
+ * 查询券商参数信息应答
+ */
 typedef struct _OesQryBrokerParamsInfoRsp {
-   OesBrokerParamsInfoT    brokerParams;
+    OesBrokerParamsInfoT    brokerParams;
 } OesQryBrokerParamsInfoRspT;
 
 
 /* 结构体的初始化值定义 */
 #define NULLOBJ_OES_QRY_BROKER_PARAMS_INFO_RSP          \
-       {NULLOBJ_OES_BROKER_PARAMS_INFO}
+        {NULLOBJ_OES_BROKER_PARAMS_INFO}
 /* -------------------------           */
 
 
+/* ===================================================================
+ * 查询周边应用升级配置信息相关结构体定义
+ * =================================================================== */
+
 /**
- * 查询通知消息应答
+ * 查询周边应用升级配置信息应答
  */
-typedef struct _OesQryNotifyInfoRsp {
-    /** 查询应答消息头 */
-    OesQryRspHeadT          rspHead;
-    /** 通知消息数组 */
-    OesNotifyInfoItemT      qryItems[OES_MAX_NOTIFY_INFO_ITEM_CNT_PER_PACK];
-} OesQryNotifyInfoRspT;
+typedef struct _OesQryApplUpgradeInfoRsp {
+    OesApplUpgradeInfoT     applUpgradeInfo;
+} OesQryApplUpgradeInfoRspT;
 
 
 /* 结构体的初始化值定义 */
-#define NULLOBJ_OES_QRY_NOTIFY_INFO_RSP                 \
-        {NULLOBJ_OES_QRY_RSP_HEAD}, \
-        {{NULLOBJ_OES_NOTIFY_INFO_ITEM}}
+#define NULLOBJ_OES_QRY_APPL_UPGRADE_INFO_RSP          \
+        {NULLOBJ_OES_APPL_UPGRADE_INFO}
 /* -------------------------           */
 
 
@@ -2645,28 +2002,21 @@ typedef struct _OesQryNotifyInfoRsp {
  * 统一的查询请求消息定义
  */
 typedef union _OesQryReqMsg {
-    OesQryOrdReqT                   qryOrd;                     /**< 查询委托信息请求 */
-    OesQryTrdReqT                   qryTrd;                     /**< 查询成交信息请求 */
-    OesQryCashAssetReqT             qryCashAsset;               /**< 查询客户资金信息请求 */
-    OesQryStkHoldingReqT            qryStkHolding;              /**< 查询股票持仓信息请求 */
-    OesQryOptHoldingReqT            qryOptHolding;              /**< 查询期权持仓信息请求 */
-    OesQryCustReqT                  qryCust;                    /**< 查询客户信息请求 */
-    OesQryInvAcctReqT               qryInvAcct;                 /**< 查询证券账户请求 */
-    OesQryCommissionRateReqT        qryComms;                   /**< 查询客户佣金信息请求 */
-    OesQryFundTransferSerialReqT    qryFundTrsf;                /**< 查询出入金信息请求 */
-    OesQryLotWinningReqT            qryLotWinning;              /**< 查询新股配号、中签信息请求 */
-    OesQryIssueReqT                 qryIssue;                   /**< 查询证券发行信息请求 */
-    OesQryStockReqT                 qryStock;                   /**< 查询现货产品信息请求 */
-    OesQryEtfReqT                   qryEtf;                     /**< 查询ETF申赎产品信息请求 */
-    OesQryEtfComponentReqT          qryEtfComponent;            /**< 查询ETF成分股信息请求 */
-    OesQryOptionReqT                qryOption;                  /**< 查询期权产品信息请求 */
-    OesQryMarketStateReqT           qryMktState;                /**< 查询市场状态信息请求 */
-    OesQryNotifyInfoReqT            qryNotifyInfo;              /**< 查询通知消息请求 */
-    OesQryCounterCashReqT           qryCounterCash;             /**< 查询主柜资金信息请求 */
-    OesQryOptPositionLimitReqT      qryOptPositionLimit;        /**< 查询期权限仓额度信息请求 */
-    OesQryOptPurchaseLimitReqT      qryOptPurchaseLimit;        /**< 查询期权限购额度信息请求 */
-    OesQryOptUnderlyingHoldingReqT  qryOptUnderlyingHolding;    /**< 查询期权标的持仓信息请求 */
-    OesQryOptExerciseAssignReqT     qryOptExerciseAssign;       /**< 查询期权行权指派信息请求 */
+    OesQryOrdReqT                   qryOrd;             /**< 查询委托信息请求 */
+    OesQryTrdReqT                   qryTrd;             /**< 查询成交信息请求 */
+    OesQryCashAssetReqT             qryCashAsset;       /**< 查询客户资金信息请求 */
+    OesQryStkHoldingReqT            qryStkHolding;      /**< 查询股票持仓信息请求 */
+    OesQryCustReqT                  qryCust;            /**< 查询客户信息请求 */
+    OesQryInvAcctReqT               qryInvAcct;         /**< 查询证券账户请求 */
+    OesQryCommissionRateReqT        qryComms;           /**< 查询客户佣金信息请求 */
+    OesQryFundTransferSerialReqT    qryFundTrsf;        /**< 查询出入金信息请求 */
+    OesQryLotWinningReqT            qryLotWinning;      /**< 查询新股配号、中签信息请求 */
+    OesQryIssueReqT                 qryIssue;           /**< 查询证券发行信息请求 */
+    OesQryStockReqT                 qryStock;           /**< 查询现货产品信息请求 */
+    OesQryEtfReqT                   qryEtf;             /**< 查询ETF申赎产品信息请求 */
+    OesQryEtfComponentReqT          qryEtfComponent;    /**< 查询ETF基金成份证券信息请求 */
+    OesQryMarketStateReqT           qryMktState;        /**< 查询市场状态信息请求 */
+    OesQryCounterCashReqT           qryCounterCash;     /**< 查询主柜资金信息请求 */
 } OesQryReqMsgT;
 
 
@@ -2680,31 +2030,25 @@ typedef union _OesQryReqMsg {
  * 统一的查询应答消息定义
  */
 typedef union _OesQryRspMsg {
-    OesQryOrdRspT                   ordRsp;                     /**< 查询委托信息应答 */
-    OesQryTrdRspT                   trdRsp;                     /**< 查询成交信息应答 */
-    OesQryCashAssetRspT             cashAssetRsp;               /**< 查询客户资金信息应答 */
-    OesQryStkHoldingRspT            stkHoldingRsp;              /**< 查询股票持仓信息应答 */
-    OesQryOptHoldingRspT            optHoldingRsp;              /**< 查询期权持仓信息应答 */
-    OesQryCustRspT                  custRsp;                    /**< 查询客户信息应答 */
-    OesQryInvAcctRspT               invAcctRsp;                 /**< 查询证券账户应答 */
-    OesQryCommissionRateRspT        commsRateRsp;               /**< 查询客户佣金信息应答 */
-    OesQryFundTransferSerialRspT    fundTrsfRsp;                /**< 查询出入金流水信息应答 */
-    OesQryLotWinningRspT            lotWinningRsp;              /**< 查询新股配号、中签信息应答 */
-    OesQryIssueRspT                 issueRsp;                   /**< 查询证券发行信息应答 */
-    OesQryStockRspT                 stockRsp;                   /**< 查询现货产品信息应答 */
-    OesQryEtfRspT                   etfRsp;                     /**< 查询ETF申赎产品信息应答 */
-    OesQryEtfComponentRspT          etfComponentRsp;            /**< 查询ETF成分股信息应答 */
-    OesQryOptionRspT                optionRsp;                  /**< 查询期权产品信息应答 */
-    OesQryTradingDayRspT            tradingDay;                 /**< 查询当前交易日信息应答 */
-    OesQryMarketStateRspT           mktStateRsp;                /**< 查询市场状态信息应答 */
-    OesQryNotifyInfoRspT            notifyInfoRsp;              /**< 查询通知消息应答 */
-    OesClientOverviewT              clientOverview;             /**< 客户端总览信息 */
-    OesQryCounterCashRspT           counterCashRsp;             /**< 客户主柜资金信息 */
-    OesQryOptPositionLimitRspT      optPositionLimitRsp;        /**< 查询期权限仓额度信息应答 */
-    OesQryOptPurchaseLimitRspT      optPurchaseLimitRsp;        /**< 查询期权限购额度信息应答 */
-    OesQryOptUnderlyingHoldingRspT  optUnderlyingHoldingRsp;    /**< 查询期权标的持仓信息应答 */
-    OesQryOptExerciseAssignRspT     optExerciseAssignRsp;       /**< 查询期权行权指派信息应答 */
-    OesQryBrokerParamsInfoRspT      brokerParamsRsp;            /**< 查询券商参数信息应答 */
+    OesQryOrdRspT                   ordRsp;             /**< 查询委托信息应答 */
+    OesQryTrdRspT                   trdRsp;             /**< 查询成交信息应答 */
+    OesQryCashAssetRspT             cashAssetRsp;       /**< 查询客户资金信息应答 */
+    OesQryStkHoldingRspT            stkHoldingRsp;      /**< 查询股票持仓信息应答 */
+    OesQryCustRspT                  custRsp;            /**< 查询客户信息应答W */
+    OesQryInvAcctRspT               invAcctRsp;         /**< 查询证券账户应答 */
+    OesQryCommissionRateRspT        commsRateRsp;       /**< 查询客户佣金信息应答 */
+    OesQryFundTransferSerialRspT    fundTrsfRsp;        /**< 查询出入金流水信息应答 */
+    OesQryLotWinningRspT            lotWinningRsp;      /**< 查询新股配号、中签信息应答 */
+    OesQryIssueRspT                 issueRsp;           /**< 查询证券发行信息应答 */
+    OesQryStockRspT                 stockRsp;           /**< 查询现货产品信息应答 */
+    OesQryEtfRspT                   etfRsp;             /**< 查询ETF申赎产品信息应答 */
+    OesQryEtfComponentRspT          etfComponentRsp;    /**< 查询ETF基金成份证券信息应答 */
+    OesQryTradingDayRspT            tradingDay;         /**< 查询当前交易日信息应答 */
+    OesQryMarketStateRspT           mktStateRsp;        /**< 查询市场状态信息应答 */
+    OesClientOverviewT              clientOverview;     /**< 客户端总览信息 */
+    OesQryCounterCashRspT           counterCashRsp;     /**< 客户主柜资金信息 */
+    OesQryBrokerParamsInfoRspT      brokerParamsRsp;    /**< 查询券商参数信息应答 */
+    OesQryApplUpgradeInfoRspT       applUpgradeRsp;     /**< 周边应用升级信息 */
 } OesQryRspMsgT;
 
 

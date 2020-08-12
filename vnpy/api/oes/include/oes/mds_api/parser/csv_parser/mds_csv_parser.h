@@ -181,19 +181,6 @@ int32   MdsCsvParser_EncodeStockStaticItem(
                 int32 bufSize);
 
 /*
- * 期权静态信息条目的编码处理
- *
- * @param[in]   pRspItem    单条期权静态信息
- * @param[out]  pBuf        序列化后数据的缓存区
- * @param[in]   bufSize     缓存区长度
- * @return  序列化后的消息体数据长度
- */
-int32   MdsCsvParser_EncodeOptionStaticItem(
-                const MdsOptionStaticInfoT *pItem,
-                char *pBuf,
-                int32 bufSize);
-
-/*
  * 行情快照条目的编码处理
  *
  * @param[in]   pRspItem    单条行情快照

@@ -94,12 +94,6 @@ int32   MdsJsonParser_EncodeStockStaticItem(
                 char *pBuf,
                 int32 bufSize);
 
-/* 期权静态信息条目的编码处理 */
-int32   MdsJsonParser_EncodeOptionStaticItem(
-                const MdsOptionStaticInfoT *pItem,
-                char *pBuf,
-                int32 bufSize);
-
 /* 行情快照条目的编码处理 */
 int32   MdsJsonParser_EncodeSnapshotListItem(
                 const MdsL1SnapshotT *pItem,

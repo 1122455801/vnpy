@@ -469,17 +469,20 @@ extern "C" {
 #   endif
 
 #   ifndef  _SPK_STRUCT_TIMESPEC
-#   if defined (__MINGW__)
-#       define  _SPK_STRUCT_TIMESPEC    struct timespec
-#       define  STimespecT              _SPK_STRUCT_TIMESPEC
-#   else
 #       define  _SPK_STRUCT_TIMESPEC    struct _spk_struct_timespec
         _SPK_STRUCT_TIMESPEC {
             __SPK_TIMEVAL_TIME_T        tv_sec;
             __SPK_TIMEVAL_TIME_T        tv_nsec;
         };
+        /* 因为 MinGW 下原生的 timespec 结构不是完全按照64位对齐的, 所以也需要使用自定义的结构 */
 #       define  STimespecT              _SPK_STRUCT_TIMESPEC
-#   endif
+
+#       if defined (__MINGW__)
+            /* 为了兼容 MinGW 下的 pthread 库而定义的, 原生 struct timespec 结构的跨平台兼容性定义 */
+#           define  __spk_timespec_t    struct timespec
+#       else
+#           define  __spk_timespec_t    STimespecT
+#       endif
 #   endif   /* _SPK_STRUCT_TIMESPEC */
 
 #   ifndef  _SPK_STRUCT_TIMEZONE
@@ -528,6 +531,9 @@ extern "C" {
 #   ifndef  _SPK_STRUCT_TIMESPEC
 #       define  _SPK_STRUCT_TIMESPEC    struct timespec
 #       define  STimespecT              _SPK_STRUCT_TIMESPEC
+
+        /* 为了兼容 MinGW 下的 pthread 库而定义的, 原生 struct timespec 结构的跨平台兼容性定义 */
+#       define  __spk_timespec_t        struct timespec
 #   endif   /* _SPK_STRUCT_TIMESPEC */
 
 #   ifndef  _SPK_STRUCT_TIMEZONE
@@ -544,6 +550,7 @@ extern "C" {
 #       define  _SPK_STRUCT_POLLFD      struct pollfd
 #       define  SPollfdT                _SPK_STRUCT_POLLFD
 #   endif   /* _SPK_STRUCT_POLLFD */
+
 
 #endif
 /* -------------------------           */
@@ -562,6 +569,18 @@ extern "C" {
 
     typedef _SPK_STRUCT_TIMEVAL32       STimeval32T;
 #endif      /* _SPK_STRUCT_TIMEVAL32 */
+
+
+#ifndef _SPK_STRUCT_TIMESPEC32
+#   define  _SPK_STRUCT_TIMESPEC32      struct _spk_struct_timespec32
+    _SPK_STRUCT_TIMESPEC32
+    {
+        int32                           tv_sec;         /* seconds */
+        int32                           tv_nsec;        /* and nanoseconds */
+    };
+
+    typedef _SPK_STRUCT_TIMESPEC32      STimespec32T;
+#endif      /* _SPK_STRUCT_TIMEVAL32 */
 /* -------------------------           */
 
 
@@ -578,6 +597,18 @@ extern "C" {
 
     typedef _SPK_STRUCT_TIMEVAL64       STimeval64T;
 #endif      /* _SPK_STRUCT_TIMEVAL64 */
+
+
+#ifndef _SPK_STRUCT_TIMESPEC64
+#   define  _SPK_STRUCT_TIMESPEC64      struct _spk_struct_timespec64
+    _SPK_STRUCT_TIMESPEC64
+    {
+        int64                           tv_sec;         /* seconds */
+        int64                           tv_nsec;        /* and nanoseconds */
+    };
+
+    typedef _SPK_STRUCT_TIMESPEC64      STimespec64T;
+#endif      /* _SPK_STRUCT_TIMESPEC64 */
 /* -------------------------           */
 
 

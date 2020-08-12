@@ -89,30 +89,13 @@
  *          - 为了支持科创板, 新增以下查询消息类型 (兼容之前版本的API)
  *              - 查询证券账户信息 (OESMSG_QRYMSG_INV_ACCT)
  *              - 查询现货产品信息 (OESMSG_QRYMSG_STOCK)
- * @version 0.16        2019/11/20
- *          - 新增回报消息类型 '通知消息回报 (OESMSG_RPT_NOTIFY_INFO)'
- *              - 对应回报消息 OesRptMsgBodyT.notifyInfoRpt
- *          - 新增 查询通知消息(OESMSG_QRYMSG_NOTIFY_INFO) 消息类型定义
- *          - 新增回报消息类型 '期权标的持仓变动信息 (OESMSG_RPT_OPTION_UNDERLYING_HOLDING_VARIATION)'
- *              - 对应回报消息 OesRptMsgBodyT.optUnderlyingHoldingRpt
- *          - 新增回报消息类型 '期权账户结算单确认 (OESMSG_RPT_OPTION_SETTLEMENT_CONFIRMED)'
- *              - 对应回报消息 OesRptMsgBodyT.optSettlementConfirmRpt
- *          - 新增 查询期权标的持仓信息(OESMSG_QRYMSG_OPT_UNDERLYING_HLD) 消息类型定义
- *          - 新增 查询期权限仓额度信息(OESMSG_QRYMSG_OPT_POSITION_LIMIT) 消息类型定义
- *          - 新增 查询期权行权指派信息(OESMSG_QRYMSG_OPT_EXERCISE_ASSIGN) 消息类型定义
- *          - 新增以下查询消息类型 (兼容之前版本的API)
- *              - 查询委托信息 (OESMSG_QRYMSG_ORD)
- *              - 查询成交信息 (OESMSG_QRYMSG_TRD)
- *              - 查询客户资金信息 (OESMSG_QRYMSG_CASH_ASSET)
- *          - 重命名 ‘资金变动回报信息’消息的结构体定义 OesCashAssetItemT => OesCashAssetReportT
- *              - 对应回报消息 OesRptMsgBodyT.cashAssetRpt
- *          - 重命名 ‘持仓变动回报信息 (股票)’消息的结构体定义 OesStkHoldingItemT => OesStkHoldingReportT
- *              - 对应回报消息 OesRptMsgBodyT.stkHoldingRpt
- *          - 重命名 ‘持仓变动回报信息 (期权)’消息的结构体定义 OesOptHoldingItemT => OesOptHoldingReportT
- *              - 对应回报消息 OesRptMsgBodyT.optHoldingRpt
- * @version 0.16.0.3    2020/01/14
- *          - 为了兼容之前版本的API, 新增以下查询消息类型
- *              - 查询期权行权指派信息 (OESMSG_QRYMSG_OPT_EXERCISE_ASSIGN)
+ * @version 0.15.10.6   2020/04/19
+ *          - 将延迟统计相关的时间戳字段升级为纳秒级时间戳 (内部使用的字段, 协议保持兼容, STimeval32T => STimespec32T)
+ * @version 0.15.11     2020/05/29
+ *          - 为了支持创业板, 新增以下查询消息类型 (兼容之前版本的API)
+ *              - 查询证券发行信息 (OESMSG_QRYMSG_ISSUE)
+ *              - 查询现货产品信息 (OESMSG_QRYMSG_STOCK)
+ *              - 查询ETF成份证券信息 (OESMSG_QRYMSG_ETF_COMPONENT)
  *
  * @since   2015/07/30
  */
@@ -137,7 +120,7 @@ extern "C" {
  * =================================================================== */
 
 /** 当前采用的协议版本号 */
-#define OES_APPL_VER_ID                         "0.16.0.4"
+#define OES_APPL_VER_ID                         "0.15.11.6"
 
 /**
  * 当前采用的协议版本号数值
@@ -148,7 +131,7 @@ extern "C" {
  *   - DD 为构建号
  *   - X  0, 表示不带时间戳的正常版本; 1, 表示带时间戳的延迟测量版本
  */
-#define OES_APPL_VER_VALUE                      (1001600041)
+#define OES_APPL_VER_VALUE                      1001511061
 
 /** 兼容的最低协议版本号 */
 #define OES_MIN_APPL_VER_ID                     "0.15.5"
@@ -192,12 +175,7 @@ typedef enum _eOesMsgType {
     OESMSG_RPT_CASH_ASSET_VARIATION             = 0x18,     /**< 0x18/24  资金变动信息 */
     OESMSG_RPT_STOCK_HOLDING_VARIATION          = 0x19,     /**< 0x19/25  持仓变动信息 (股票) */
     OESMSG_RPT_OPTION_HOLDING_VARIATION         = 0x1A,     /**< 0x1A/26  持仓变动信息 (期权) */
-    OESMSG_RPT_OPTION_UNDERLYING_HOLDING_VARIATION
-                                                = 0x1B,     /**< 0x1B/27  期权标的持仓变动信息 */
-    OESMSG_RPT_OPTION_SETTLEMENT_CONFIRMED      = 0x1C,     /**< 0x1C/28  期权账户结算单确认消息 */
-
-    OESMSG_RPT_NOTIFY_INFO                      = 0x1E,     /**< 0x1E/30  OES通知消息 */
-    OESMSG_RPT_SERVICE_STATE                    = 0x1F,     /**< 0x1F/31  OES服务状态信息 (暂不支持订阅推送) */
+    OESMSG_RPT_SERVICE_STATE                    = 0x1B,     /**< 0x1B/27  OES服务状态信息 (暂不支持订阅推送) */
     __OESMSG_RPT_MAX,                                       /**< 最大的回报消息类型 */
 
     /*
@@ -206,7 +184,6 @@ typedef enum _eOesMsgType {
     __OESMSG_NONTRD_MIN                         = 0x20,     /**< 0x20/32  最小的非交易消息类型 */
     OESMSG_NONTRD_FUND_TRSF_REQ                 = 0x21,     /**< 0x21/33  出入金委托 */
     OESMSG_NONTRD_CHANGE_PASSWORD               = 0x22,     /**< 0x22/34  修改客户端登录密码 */
-    OESMSG_NONTRD_OPT_CONFIRM_SETTLEMENT        = 0x23,     /**< 0x23/35  期权账户结算单确认 */
     __OESMSG_NONTRD_MAX,                                    /**< 最大的非交易消息类型 */
 
     /*
@@ -214,31 +191,26 @@ typedef enum _eOesMsgType {
      */
     __OESMSG_QRYMSG_MIN                         = 0x2F,     /**< 0x2F/47  最小的查询消息类型 */
     OESMSG_QRYMSG_CLIENT_OVERVIEW               = 0x30,     /**< 0x30/48  查询客户端总览信息 */
+    OESMSG_QRYMSG_ORD                           = 0x31,     /**< 0x31/49  查询委托信息 */
+    OESMSG_QRYMSG_TRD                           = 0x32,     /**< 0x32/50  查询成交信息 */
+    OESMSG_QRYMSG_CASH_ASSET                    = 0x33,     /**< 0x33/51  查询客户资金信息 */
     OESMSG_QRYMSG_STK_HLD                       = 0x34,     /**< 0x34/52  查询股票持仓信息 */
     OESMSG_QRYMSG_OPT_HLD                       = 0x35,     /**< 0x35/53  查询期权持仓信息 */
     OESMSG_QRYMSG_CUST                          = 0x36,     /**< 0x36/54  查询客户信息 */
     OESMSG_QRYMSG_COMMISSION_RATE               = 0x38,     /**< 0x38/56  查询客户佣金信息 */
     OESMSG_QRYMSG_FUND_TRSF                     = 0x39,     /**< 0x39/57  查询出入金信息 */
     OESMSG_QRYMSG_ETF                           = 0x3B,     /**< 0x3B/59  查询ETF申赎产品信息 */
-    OESMSG_QRYMSG_ETF_COMPONENT                 = 0x3C,     /**< 0x3C/60  查询ETF成分股信息 */
     OESMSG_QRYMSG_OPTION                        = 0x3D,     /**< 0x3D/61  查询期权产品信息 */
-    OESMSG_QRYMSG_ISSUE                         = 0x3E,     /**< 0x3E/62  查询证券发行信息 */
     OESMSG_QRYMSG_LOT_WINNING                   = 0x3F,     /**< 0x3F/63  查询新股配号、中签信息 */
     OESMSG_QRYMSG_TRADING_DAY                   = 0x40,     /**< 0x40/64  查询当前交易日 */
     OESMSG_QRYMSG_MARKET_STATE                  = 0x41,     /**< 0x41/65  查询市场状态 */
     OESMSG_QRYMSG_COUNTER_CASH                  = 0x42,     /**< 0x42/66  查询客户主柜资金信息 */
-    OESMSG_QRYMSG_OPT_UNDERLYING_HLD            = 0x43,     /**< 0x43/67  查询期权标的持仓信息 */
-    OESMSG_QRYMSG_NOTIFY_INFO                   = 0x44,     /**< 0x44/68  查询通知消息 */
-    OESMSG_QRYMSG_OPT_POSITION_LIMIT            = 0x45,     /**< 0x45/69  查询期权限仓额度信息 */
-    OESMSG_QRYMSG_OPT_PURCHASE_LIMIT            = 0x46,     /**< 0x46/70  查询期权限购额度信息 */
     OESMSG_QRYMSG_BROKER_PARAMS                 = 0x48,     /**< 0x48/72  查询券商参数信息 */
 
     OESMSG_QRYMSG_INV_ACCT                      = 0x51,     /**< 0x51/81  查询证券账户信息 (0x37的更新版本, @since 0.15.9) */
-    OESMSG_QRYMSG_STOCK                         = 0x52,     /**< 0x52/82  查询现货产品信息 (0x3A的更新版本, @since 0.15.9) */
-    OESMSG_QRYMSG_CASH_ASSET                    = 0x53,     /**< 0x53/83  查询客户资金信息 (0x33的更新版本, @since 0.16) */
-    OESMSG_QRYMSG_ORD                           = 0x54,     /**< 0x54/84  查询委托信息 (0x31的更新版本, @since 0.16) */
-    OESMSG_QRYMSG_TRD                           = 0x55,     /**< 0x55/85  查询成交信息 (0x32的更新版本, @since 0.16) */
-    OESMSG_QRYMSG_OPT_EXERCISE_ASSIGN           = 0x56,     /**< 0x56/86  查询期权行权指派信息 (0x47的更新版本, @since 0.16.0.3) */
+    OESMSG_QRYMSG_ISSUE                         = 0x57,     /**< 0x57/87  查询证券发行信息 (0x3E的更新版本, @since 0.15.11) */
+    OESMSG_QRYMSG_STOCK                         = 0x58,     /**< 0x58/88  查询现货产品信息 (0x52的更新版本, @since 0.15.11) */
+    OESMSG_QRYMSG_ETF_COMPONENT                 = 0x59,     /**< 0x59/89  查询ETF成份证券信息 (0x3C的更新版本, @since 0.15.11) */
     __OESMSG_QRYMSG_MAX,                                    /**< 最大的查询消息类型 */
 
     /*
@@ -252,14 +224,7 @@ typedef enum _eOesMsgType {
     /*
      * 以下消息类型定义已废弃, 只是为了兼容之前的版本而暂时保留
      */
-    OESMSG_RPT_ORDER_REJECT                     = OESMSG_RPT_BUSINESS_REJECT,
-
-    OESMSG_QRYMSG_ORD_L001509                   = 0x31,     /**< 0x31/49  查询委托信息 (兼容 v0.15.9 以及 v0.15.9 之前的版本的消息类型) */
-    OESMSG_QRYMSG_TRD_L001509                   = 0x32,     /**< 0x32/50  查询成交信息 (兼容 v0.15.9 以及 v0.15.9 之前的版本的消息类型) */
-    OESMSG_QRYMSG_CASH_ASSET_L001509            = 0x33,     /**< 0x33/51  查询客户资金信息 (兼容 v0.15.9 以及 v0.15.9 之前的版本的消息类型) */
-    OESMSG_QRYMSG_INV_ACCT_L001508              = 0x37,     /**< 0x37/55  查询证券账户信息 (兼容 v0.15.8 以及 v0.15.8 之前的版本的消息类型) */
-    OESMSG_QRYMSG_STOCK_L001508                 = 0x3A,     /**< 0x3A/58  查询现货产品信息 (兼容 v0.15.8 以及 v0.15.8 之前的版本的消息类型) */
-    OESMSG_QRYMSG_OPT_EXERCISE_ASSIGN_L001600   = 0x47      /**< 0x47/71  查询期权行权指派信息 (兼容 v0.16.0.2 以及 v0.16.0.2 之前的版本的消息类型) */
+    OESMSG_RPT_ORDER_REJECT                     = OESMSG_RPT_BUSINESS_REJECT
 
 } eOesMsgTypeT;
 /* -------------------------           */
@@ -276,7 +241,6 @@ typedef enum _eOesMsgType {
  * - 0x0020: 资金变动信息
  * - 0x0040: 持仓变动信息
  * - 0x0080: 市场状态信息
- * - 0x0100: 通知消息回报
  * - 0xFFFF: 所有回报
  */
 typedef enum _eOesSubscribeReportType {
@@ -306,12 +270,6 @@ typedef enum _eOesSubscribeReportType {
 
     /** 市场状态信息 */
     OES_SUB_RPT_TYPE_MARKET_STATE               = 0x80,
-
-    /** 通知消息 */
-    OES_SUB_RPT_TYPE_NOTIFY_INFO                = 0x100,
-
-    /** 结算单确认消息 */
-    OES_SUB_RPT_TYPE_SETTLEMETN_CONFIRMED       = 0x200,
 
     /** 所有回报 */
     OES_SUB_RPT_TYPE_ALL                        = 0xFFFF,
@@ -378,7 +336,6 @@ typedef struct _OesReportSynchronizationReq {
      * - 0x0020: 资金变动信息
      * - 0x0040: 持仓变动信息
      * - 0x0080: 市场状态信息
-     * - 0x0100: 通知消息回报
      * - 0xFFFF: 所有回报
      *
      * @see eOesSubscribeReportTypeT
@@ -463,11 +420,11 @@ typedef struct _OesTestRequestRsp {
 
 #ifdef  _OES_EXPORT_LATENCY_STATS
     /** 消息实际接收时间 (开始解码等处理之前的时间) */
-    STimeval32T         __recvTime;
+    STimespec32T        __recvTime;
     /** 消息采集处理完成时间 */
-    STimeval32T         __collectedTime;
+    STimespec32T        __collectedTime;
     /** 消息推送时间 (写入推送缓存以后, 实际网络发送之前) */
-    STimeval32T         __pushingTime;
+    STimespec32T        __pushingTime;
 #endif
 
 } OesTestRequestRspT;
@@ -607,42 +564,6 @@ typedef struct _OesBatchOrdersReq {
 /* -------------------------           */
 
 
-/**
- * 期权账户结算单确认请求报文
- */
-typedef struct _OesOptSettlementConfirmReq {
-    /** 客户代码 */
-    char                custId[OES_CUST_ID_MAX_LEN];
-
-    /** 用户私有信息 (由客户端自定义填充, 并在回报数据中原样返回) */
-    union {
-        uint64          u64;                    /**< uint64 类型的用户私有信息 */
-        int64           i64;                    /**< int64 类型的用户私有信息 */
-        uint32          u32[2];                 /**< uint32[2] 类型的用户私有信息 */
-        int32           i32[2];                 /**< int32[2] 类型的用户私有信息 */
-        char            c8[8];                  /**< char[8] 类型的用户私有信息 */
-    } userInfo;
-} OesOptSettlementConfirmReqT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_OPT_SETTLEMENT_CONFIRM_REQ         \
-        {0}, {0}
-/* -------------------------           */
-
-
-/**
- * 期权账户结算单确认应答报文
- */
-typedef OesOptSettlementConfirmBaseInfoT    OesOptSettlementConfirmRspT;
-
-
-/* 结构体的初始化值定义 */
-#define NULLOBJ_OES_OPT_SETTLEMENT_CONFIRM_RSP         \
-        NULLOBJ_OPT_SETTLEMENT_CONFIRM_BASE_INFO
-/* -------------------------           */
-
-
 /* ===================================================================
  * 回报消息定义
  * =================================================================== */
@@ -680,18 +601,8 @@ typedef union _OesRptMsgBody {
     OesFundTrsfRejectT  fundTrsfRejectRsp;      /**< 出入金委托拒绝 */
     OesFundTrsfReportT  fundTrsfCnfm;           /**< 出入金执行报告 */
 
-    OesCashAssetReportT cashAssetRpt;           /**< 资金变动回报信息 */
-    OesStkHoldingReportT
-                        stkHoldingRpt;          /**< 持仓变动回报信息 (股票) */
-    OesOptHoldingReportT
-                        optHoldingRpt;          /**< 持仓变动回报信息 (期权) */
-    OesOptUnderlyingHoldingReportT
-                        optUnderlyingHoldingRpt;/**< 期权标的持仓变动回报信息 */
-
-    OesNotifyInfoReportT
-                        notifyInfoRpt;          /**< 通知消息回报信息 */
-    OesOptSettlementConfirmReportT
-                        optSettlementConfirmRpt;/**< 期权账户结算单确认回报信息 */
+    OesCashAssetItemT   cashAssetRpt;           /**< 资金变动信息 */
+    OesStkHoldingItemT  stkHoldingRpt;          /**< 持仓变动信息 (股票) */
 
 } OesRptMsgBodyT;
 
@@ -742,10 +653,6 @@ typedef union _OesReqMsgBody {
     OesChangePasswordReqT
                         changePasswordReq;
 
-    /** 期权账户结算单确认请求报文 */
-    OesOptSettlementConfirmReqT
-                        optSettlementConfirmReq;
-
     /** 测试请求报文 */
     OesTestRequestReqT  testRequestReq;
 
@@ -781,10 +688,6 @@ typedef union _OesRspMsgBody {
     /** 修改密码应答报文 */
     OesChangePasswordRspT
                         changePasswordRsp;
-
-    /** 结算单确认应答报文 */
-    OesOptSettlementConfirmRspT
-                        optSettlementConfirmRsp;
 } OesRspMsgBodyT;
 
 

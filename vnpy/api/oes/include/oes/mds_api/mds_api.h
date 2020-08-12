@@ -64,7 +64,7 @@
  * @version 0.15.5.1    2017/11/17
  *          - 增加 MdsApi_IsValidTcpChannel、MdsApi_IsValidUdpChannel 等接口, 用于判断通道是否已经连接且有效
  * @version 0.15.5.2    2018/01/29
- *          - 增加 MdsApi_GetLastRecvTime、MdsApi_GetLastSendTime 接口, 用于获取通道最新发送/接受消息的时间
+ *          - 增加 MdsApi_GetLastRecvTime、MdsApi_GetLastSendTime 接口, 用于获取通道最近发送/接收消息的时间
  *          - 登录失败时, 可以通过 errno/SPK_GET_ERRNO() 获取到具体失败原因
  * @version 0.15.5.3    2018/01/24
  *          - 调整接口 MdsApi_InitAll, 增加一个函数参数 (pUdpTick2AddrKey), 以支持分别订阅逐笔成交和逐笔委托的行情组播
@@ -138,9 +138,21 @@
  *                  - 逐笔-频道2, 深圳逐笔成交/逐笔委托
  *          - 对外开放之前仅内部使用的配置文件解析接口
  *              - MdsApi_ParseConfigFromFile2, 解析客户端配置文件, 并可以指定是否允许配置项为空
- * @version 0.16        2019/11/20
- *          - 增加查询期权合约静态信息的接口
- *              - MdsApi_QueryOptionStaticInfo
+ * @version 0.15.10.6   2020/05/14
+ *          - 将会话信息中的发送时间(lastSendTime)和接收时间(lastRecvTime)升级为纳秒级时间戳 (STimevalT => STimespecT)
+ * @version 0.15.11     2020/05/29
+ *          - 增加辅助的通道组接口
+ *              - MdsApi_GetChannelGroupLastRecvTime, 返回通道组最近接收消息时间
+ *              - MdsApi_GetChannelGroupLastSendTime, 返回通道组最近发送消息时间
+ *          - 增加辅助判断现货产品状态的接口
+ *              - MdsApi_HasStockStatus
+ * @version 0.15.11.3   2020/06/29
+ *          - 增加新的批量查询证券(股票/债券/基金)静态信息列表接口, 以支持同时指定和查询多个证券代码
+ *              - MdsApi_QueryStockStaticInfoList, 批量查询证券(股票/债券/基金)静态信息列表
+ *              - MdsApi_QueryStockStaticInfoList2, 批量查询证券(股票/债券/基金)静态信息列表 (字符串指针数组形式的证券代码列表)
+ *          - 增加用于校验API版本号是否匹配的辅助函数
+ *              - __MdsApi_CheckApiVersion
+ *
  * @since   2016/03/02
  */
 
@@ -149,6 +161,7 @@
 #define _MDS_API_H
 
 
+#include    <mds_global/mds_base_model.h>
 #include    <mds_global/mds_mkt_packets.h>
 #include    <mds_api/errors/mds_errors.h>
 #include    <sutil/net/spk_general_client_define.h>
@@ -620,7 +633,11 @@ BOOL    MdsApi_SubscribeMarketData(
  *                              @see eMdsSubscribeDataTypeT
  * @return  TRUE 成功; FALSE 失败
  *
- * @see     MdsHelper_SetTickTypeOnSubscribeByString
+ * @see     MdsApi_SetThreadSubscribeTickType
+ * @see     MdsApi_SetThreadSubscribeTickRebuildFlag
+ * @see     MdsApi_SetThreadSubscribeTickExpireType
+ * @see     MdsApi_SetThreadSubscribeRequireInitMd
+ * @see     MdsApi_SetThreadSubscribeBeginTime
  */
 BOOL    MdsApi_SubscribeByString(
                 MdsApiSessionInfoT *pTcpChannel,
@@ -657,7 +674,11 @@ BOOL    MdsApi_SubscribeByString(
  *                              @see eMdsSubscribeDataTypeT
  * @return  TRUE 成功; FALSE 失败
  *
- * @see     MdsHelper_SetTickTypeOnSubscribeByString
+ * @see     MdsApi_SetThreadSubscribeTickType
+ * @see     MdsApi_SetThreadSubscribeTickRebuildFlag
+ * @see     MdsApi_SetThreadSubscribeTickExpireType
+ * @see     MdsApi_SetThreadSubscribeRequireInitMd
+ * @see     MdsApi_SetThreadSubscribeBeginTime
  */
 BOOL    MdsApi_SubscribeByString2(
                 MdsApiSessionInfoT *pTcpChannel,
@@ -671,6 +692,8 @@ BOOL    MdsApi_SubscribeByString2(
 /**
  * 直接根据字符串形式的证券代码列表订阅行情, 并通过证券代码前缀来区分和识别所属市场
  *
+ * @note    代码前缀仅对 pSecurityListStr 参数指定的证券代码生效, 只是为了方便区分证券代码
+ *          所属的市场, 并不能直接通过代码前缀自动订阅所有匹配的股票
  * @note    为兼容之前的版本, 该接口无法指定 tickType 等订阅参数, 可以通过
  *          MdsApi_SetThreadSubscribeTickType 等接口来设置这些附加的订阅参数
  * @note    频繁订阅会对当前连接的行情获取速度产生不利影响, 建议每次订阅都尽量指定更多的证券
@@ -716,7 +739,11 @@ BOOL    MdsApi_SubscribeByString2(
  *                              @see eMdsSubscribeDataTypeT
  * @return  TRUE 成功; FALSE 失败
  *
- * @see     MdsHelper_SetTickTypeOnSubscribeByString
+ * @see     MdsApi_SetThreadSubscribeTickType
+ * @see     MdsApi_SetThreadSubscribeTickRebuildFlag
+ * @see     MdsApi_SetThreadSubscribeTickExpireType
+ * @see     MdsApi_SetThreadSubscribeRequireInitMd
+ * @see     MdsApi_SetThreadSubscribeBeginTime
  */
 BOOL    MdsApi_SubscribeByStringAndPrefixes(
                 MdsApiSessionInfoT *pTcpChannel,
@@ -731,6 +758,8 @@ BOOL    MdsApi_SubscribeByStringAndPrefixes(
 /**
  * 根据字符串指针数组形式的证券代码列表订阅行情, 并通过证券代码前缀来区分和识别所属市场
  *
+ * @note    代码前缀仅对 pSecurityListStr 参数指定的证券代码生效, 只是为了方便区分证券代码
+ *          所属的市场, 并不能直接通过代码前缀自动订阅所有匹配的股票
  * @note    为兼容之前的版本, 该接口无法指定 tickType 等订阅参数, 可以通过
  *          MdsApi_SetThreadSubscribeTickType 等接口来设置这些附加的订阅参数
  * @note    频繁订阅会对当前连接的行情获取速度产生不利影响, 建议每次订阅都尽量指定更多的证券
@@ -774,7 +803,11 @@ BOOL    MdsApi_SubscribeByStringAndPrefixes(
  *                              @see eMdsSubscribeDataTypeT
  * @return  TRUE 成功; FALSE 失败
  *
- * @see     MdsHelper_SetTickTypeOnSubscribeByString
+ * @see     MdsApi_SetThreadSubscribeTickType
+ * @see     MdsApi_SetThreadSubscribeTickRebuildFlag
+ * @see     MdsApi_SetThreadSubscribeTickExpireType
+ * @see     MdsApi_SetThreadSubscribeRequireInitMd
+ * @see     MdsApi_SetThreadSubscribeBeginTime
  */
 BOOL    MdsApi_SubscribeByStringAndPrefixes2(
                 MdsApiSessionInfoT *pTcpChannel,
@@ -899,7 +932,7 @@ const char *
  * @param       pQryChannel     会话信息
  * @param       exchangeId      交易所代码
  * @param       mdProductType   行情类别
- * @param       instrId         产品代码
+ * @param       instrId         证券代码 (转换为整数类型的证券代码)
  * @param[out]  pRspBuf         用于输出查询结果的应答数据缓存
  *                              - 消息体的数据类型为L1快照 <code>MdsL1SnapshotT</code>
  * @retval      =0              查询成功
@@ -919,14 +952,14 @@ int32   MdsApi_QueryMktDataSnapshot(
  * 批量查询行情快照
  *
  * @param   pQryChannel         会话信息
- * @param   pSecurityListStr    证券代码列表字符串 (证券代码的最大数量限制为 200)
+ * @param   pSecurityListStr    证券代码列表字符串
  *                              - 证券代码支持以 .SH 或 .SZ 为后缀来指定其所属的交易所
  *                              - 空字符串 "" 或 NULL, 表示查询所有产品的行情 (不包括指数和期权)
  * @param   pDelim              证券代码列表的分隔符 (e.g. ",;| \t")
  *                              - 如果为空, 则使用默认的分隔符:
  *                                ',' 或 ';' 或 '|' 或 ' ' 或 '\t'
  * @param   pQryFilter          查询过滤条件
- *                              - 传空指针或者将过滤条件初始化为0, 代表过滤条件不生效
+ *                              - 传空指针或者将过滤条件初始化为0, 代表无需过滤
  * @param   fnQryMsgCallback    进行消息处理的回调函数
  *                              - 消息体的数据类型为L1快照 <code>MdsL1SnapshotT</code>
  * @param   pCallbackParams     回调函数的参数
@@ -944,15 +977,15 @@ int32   MdsApi_QuerySnapshotList(
                 void *pCallbackParams);
 
 /**
- * 批量查询行情快照 (根据字符串指针数组形式的证券代码列表)
+ * 批量查询行情快照 (字符串指针数组形式的证券代码列表)
  *
  * @param   pQryChannel         会话信息
- * @param   ppSecurityArray     证券代码列表的指针数组 (证券代码的最大数量限制为 200)
+ * @param   ppSecurityArray     证券代码列表的指针数组
  *                              - 证券代码支持以 .SH 或 .SZ 为后缀来指定其所属的交易所
  *                              - 空指针NULL或代码数量为0, 表示查询所有产品的行情 (不包括指数和期权)
  * @param   securityCount       证券代码数量
  * @param   pQryFilter          查询过滤条件
- *                              - 传空指针或者将过滤条件初始化为0, 代表过滤条件不生效
+ *                              - 传空指针或者将过滤条件初始化为0, 代表无需过滤
  * @param   fnQryMsgCallback    进行消息处理的回调函数
  *                              - 消息体的数据类型为L1快照 <code>MdsL1SnapshotT</code>
  * @param   pCallbackParams     回调函数的参数
@@ -975,7 +1008,7 @@ int32   MdsApi_QuerySnapshotList2(
  * @param       pQryChannel     会话信息
  * @param       exchangeId      交易所代码
  * @param       mdProductType   行情类别
- * @param       instrId         产品代码
+ * @param       instrId         证券代码 (转换为整数类型的证券代码)
  * @param[out]  pRspBuf         用于输出查询结果的应答数据缓存
  * @retval      =0              查询成功
  * @retval      <0              查询失败 (负的错误号)
@@ -1010,7 +1043,7 @@ int32   MdsApi_QueryTrdSessionStatus(
                 MdsTradingSessionStatusMsgT *pRspBuf);
 
 /**
- * 批量查询证券(股票/债券/基金)静态信息
+ * 查询证券(股票/债券/基金)静态信息
  *
  * @param   pQryChannel         会话信息
  * @param   pQryFilter          查询过滤条件
@@ -1021,7 +1054,8 @@ int32   MdsApi_QueryTrdSessionStatus(
  * @retval  >=0                 成功查询到的记录数
  * @retval  <0                  失败 (负的错误号)
  *
- * @see     MdsStockStaticInfoT
+ * @see         MdsStockStaticInfoT
+ * @deprecated  已废弃, 推荐使用 MdsApi_QueryStockStaticInfoList 接口
  */
 int32   MdsApi_QueryStockStaticInfo(
                 MdsApiSessionInfoT *pQryChannel,
@@ -1030,22 +1064,56 @@ int32   MdsApi_QueryStockStaticInfo(
                 void *pCallbackParams);
 
 /**
- * 批量查询期权合约静态信息
+ * 批量查询证券(股票/债券/基金)静态信息列表
  *
  * @param   pQryChannel         会话信息
+ * @param   pSecurityListStr    证券代码列表字符串
+ *                              - 证券代码支持以 .SH 或 .SZ 为后缀来指定其所属的交易所
+ *                              - 空字符串 "" 或 NULL, 表示查询所有证券 (不包括指数和期权)
+ * @param   pDelim              证券代码列表的分隔符 (e.g. ",;| \t")
+ *                              - 如果为空, 则使用默认的分隔符:
+ *                                ',' 或 ';' 或 '|' 或 ' ' 或 '\t'
  * @param   pQryFilter          查询过滤条件
- *                              - 传空指针或者将过滤条件初始化为0, 将查询所有数据
+ *                              - 传空指针或者将过滤条件初始化为0, 代表无需过滤
  * @param   fnQryMsgCallback    进行消息处理的回调函数
- *                              - 消息体的数据类型为 <code>MdsOptionStaticInfoT</code>
+ *                              - 消息体的数据类型为证券静态信息 <code>MdsStockStaticInfoT</code>
  * @param   pCallbackParams     回调函数的参数
  * @retval  >=0                 成功查询到的记录数
  * @retval  <0                  失败 (负的错误号)
  *
- * @see     MdsOptionStaticInfoT
+ * @see     MdsStockStaticInfoT
  */
-int32   MdsApi_QueryOptionStaticInfo(
+int32   MdsApi_QueryStockStaticInfoList(
                 MdsApiSessionInfoT *pQryChannel,
-                const MdsQryOptionStaticInfoFilterT *pQryFilter,
+                const char *pSecurityListStr,
+                const char *pDelim,
+                const MdsQryStockStaticInfoListFilterT *pQryFilter,
+                F_MDSAPI_ON_QRY_MSG_T fnQryMsgCallback,
+                void *pCallbackParams);
+
+/**
+ * 批量查询证券(股票/债券/基金)静态信息列表 (字符串指针数组形式的证券代码列表)
+ *
+ * @param   pQryChannel         会话信息
+ * @param   ppSecurityArray     证券代码列表的指针数组
+ *                              - 证券代码支持以 .SH 或 .SZ 为后缀来指定其所属的交易所
+ *                              - 空指针NULL或代码数量为0, 表示查询所有证券 (不包括指数和期权)
+ * @param   securityCount       证券代码数量
+ * @param   pQryFilter          查询过滤条件
+ *                              - 传空指针或者将过滤条件初始化为0, 代表无需过滤
+ * @param   fnQryMsgCallback    进行消息处理的回调函数
+ *                              - 消息体的数据类型为证券静态信息 <code>MdsStockStaticInfoT</code>
+ * @param   pCallbackParams     回调函数的参数
+ * @retval  >=0                 成功查询到的记录数
+ * @retval  <0                  失败 (负的错误号)
+ *
+ * @see     MdsStockStaticInfoT
+ */
+int32   MdsApi_QueryStockStaticInfoList2(
+                MdsApiSessionInfoT *pQryChannel,
+                const char *ppSecurityArray[],
+                int32 securityCount,
+                const MdsQryStockStaticInfoListFilterT *pQryFilter,
                 F_MDSAPI_ON_QRY_MSG_T fnQryMsgCallback,
                 void *pCallbackParams);
 /* -------------------------           */
@@ -1063,7 +1131,7 @@ int32   MdsApi_QueryOptionStaticInfo(
  * @param[in]   pChangePasswordReq
  *                              待发送的密码修改请求
  * @param[out]  pOutChangePasswordRsp
- *                              用于输出测试请求应答的缓存区
+ *                              用于输出密码修改请求应答的缓存区
  * @retval      0               成功
  * @retval      <0              API调用失败 (负的错误号)
  * @retval      >0              服务端业务处理失败 (MDS错误号)
@@ -1537,6 +1605,24 @@ MdsApiSessionInfoT *
                 SPK_SOCKET socketFd);
 
 /**
+ * 返回通道组最近接收消息时间
+ *
+ * @param   pChannelGroup       通道组信息
+ * @return  通道组最近接收消息时间(单位: 秒)
+ */
+int64   MdsApi_GetChannelGroupLastRecvTime(
+                MdsApiChannelGroupT *pChannelGroup);
+
+/**
+ * 返回通道组最近发送消息时间
+ *
+ * @param   pChannelGroup       通道组信息
+ * @return  通道组最近发送消息时间(单位: 秒)
+ */
+int64   MdsApi_GetChannelGroupLastSendTime(
+                MdsApiChannelGroupT *pChannelGroup);
+
+/**
  * 遍历通道组下的所有通道信息并执行回调函数
  *
  * @param       pChannelGroup   通道组信息
@@ -1799,19 +1885,19 @@ const char *
         MdsApi_GetCustomizedDriverId();
 
 /**
- * 获取通道最新接受消息时间
+ * 获取通道最近接收消息时间
  *
  * @param   pSessionInfo        会话信息
- * @return  通道最新接受消息时间(单位: 秒)
+ * @return  通道最近接收消息时间(单位: 秒)
  */
 int64   MdsApi_GetLastRecvTime(
                 const MdsApiSessionInfoT *pSessionInfo);
 
 /**
- * 获取通道最新发送消息时间
+ * 获取通道最近发送消息时间
  *
  * @param   pSessionInfo        会话信息
- * @return  通道最新发送消息时间(单位: 秒)
+ * @return  通道最近发送消息时间(单位: 秒)
  */
 int64   MdsApi_GetLastSendTime(
                 const MdsApiSessionInfoT *pSessionInfo);
@@ -1903,7 +1989,7 @@ const char *
  * 返回指定错误码是否属于指定错误信息条目
  *
  * @param   errCode             错误编码
- * @param   pErr                错误信息条目
+ * @param   pErrMsg             错误信息条目
  * @return  TRUE 属于; FALSE 不属于
  */
 BOOL    MdsApi_IsErrorOf(
@@ -1915,13 +2001,25 @@ BOOL    MdsApi_IsErrorOf(
  *
  * @param   status              状态码
  * @param   detailStatus        明细状态码
- * @param   pErr                错误信息条目
+ * @param   pErrMsg             错误信息条目
  * @return  TRUE 属于; FALSE 不属于
  */
 BOOL    MdsApi_IsErrorOf2(
                 uint8 status,
                 uint8 detailStatus,
                 const SErrMsgT *pErrMsg);
+
+/**
+ * 返回现货产品是否具有指定状态
+ * 根据证券状态'securityStatus'字段判断 @see MdsStockStaticInfoT
+ *
+ * @param   pStockStaticInfo    现货产品信息
+ * @param   status              指定的状态 @see eOesSecurityStatusT
+ * @return  TRUE 具有指定的状态; FALSE 没有指定的状态
+ */
+BOOL    MdsApi_HasStockStatus(
+                const MdsStockStaticInfoT *pStockStaticInfo,
+                uint32 status);
 /* -------------------------           */
 
 
@@ -2076,6 +2174,46 @@ int32   MdsHelper_AddSubscribeRequestEntry(
                 eMdsExchangeIdT exchangeId,
                 eMdsMdProductTypeT mdProductType,
                 int32 securityId);
+/* -------------------------           */
+
+
+/* ===================================================================
+ * 用于校验API版本号是否匹配的标识函数定义
+ * =================================================================== */
+
+#define __MDSAPI_METHOD_IsApiVersionMatched_NAME2(VER)          \
+        __MdsApi_IsApiVersionMatched__##VER
+
+#define __MDSAPI_METHOD_IsApiVersionMatched_NAME(VER)           \
+        __MDSAPI_METHOD_IsApiVersionMatched_NAME2(VER)
+
+#define __MDSAPI_METHOD_IsApiVersionMatched                     \
+        __MDSAPI_METHOD_IsApiVersionMatched_NAME(MDS_APPL_VER_VALUE)
+
+
+/* 用于校验API版本号是否匹配的标识函数 (如果链接时报函数不存在错误, 请检查API的头文件与库文件是否一致) */
+BOOL    __MDSAPI_METHOD_IsApiVersionMatched();
+/* -------------------------           */
+
+
+/* ===================================================================
+ * 辅助的内联函数定义
+ * =================================================================== */
+
+/**
+ * 检查API版本是否匹配 (检查API头文件和库文件的版本是否匹配)
+ *
+ * @return  TRUE 匹配; FALSE 不匹配
+ */
+static __inline BOOL
+__MdsApi_CheckApiVersion() {
+    /* 如果编译时报 IsApiVersionMatched 函数不存在错误, 请检查API的头文件与库文件是否一致 */
+    if (__MDSAPI_METHOD_IsApiVersionMatched()
+            && strcmp(MdsApi_GetApiVersion(), MDS_APPL_VER_ID) == 0) {
+        return TRUE;
+    }
+    return FALSE;
+}
 /* -------------------------           */
 
 

@@ -120,12 +120,6 @@ int32   JsonParser_EncodeStkHoldingItem(
                 int32 bufSize);
 
 /* 期权持仓查询编码单条回报处理 */
-int32   JsonParser_EncodeOptHoldingItem(
-                const OesOptHoldingItemT *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
-/* 期权持仓查询编码单条回报处理 */
 int32   JsonParser_EncodeLotWinningItem(
                 const OesLotWinningItemT *pRspItem,
                 char *pBuf,
@@ -155,15 +149,9 @@ int32   JsonParser_EncodeEtfItem(
                 char *pBuf,
                 int32 bufSize);
 
-/* 单条ETF成分股信息查询结果序列化 */
+/* 单条ETF成份证券信息查询结果序列化 */
 int32   JsonParser_EncodeEtfComponentItem(
                 const OesEtfComponentItemT *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
-/* 单条期权产品信息查询结果序列化 */
-int32   JsonParser_EncodeOptionItem(
-                const OesOptionItemT *pRspItem,
                 char *pBuf,
                 int32 bufSize);
 
@@ -173,57 +161,20 @@ int32   JsonParser_EncodeMktStatusItem(
                 char *pBuf,
                 int32 bufSize);
 
-/* 单条通知消息查询结果序列化 */
-int32   JsonParser_EncodeNotifyInfoItem(
-                const OesNotifyInfoItemT *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
 /* 单条主柜资金查询结果序列化 */
 int32   JsonParser_EncodeCounterCashItem(
                 const OesCounterCashItemT *pRspItem,
                 char *pBuf,
                 int32 bufSize);
 
-/* 期权标的锁定查询编码单条回报处理 */
-int32   JsonParser_EncodeOptUnderlyingHoldingItem(
-                const OesOptUnderlyingHoldingItemT *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
-/* 期权限仓额度查询编码单条回报处理 */
-int32   JsonParser_EncodeOptPositionLimitItem(
-                const OesOptPositionLimitItemT *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
-/* 期权限购额度信息查询编码单条回报处理 */
-int32   JsonParser_EncodeOptPurchaseLimitItem(
-                const OesOptPurchaseLimitItemT *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
-/* 期权行权指派查询编码单条回报处理 */
-int32   JsonParser_EncodeOptExerciseAssignItem(
-                const OesOptExerciseAssignItemT *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
-/* 期权结算单基础信息查询 */
-int32   JsonParser_EncodeOptSettlBaseInfo(
-                const void *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
-/* 期权结算单持仓信息查询 */
-int32   JsonParser_EncodeOptSettlPosition(
-                const void *pRspItem,
-                char *pBuf,
-                int32 bufSize);
-
 /* 券商参数查询结果序列化 */
 int32   JsonParser_EncodeBrokerParams(
                 const OesBrokerParamsInfoT *pRspItem,
+                char *pBuf, int32 bufSize);
+
+/* 周边应用升级配置信息查询结果序列化 */
+int32   JsonParser_EncodeApplUpgradeInfo(
+                const OesApplUpgradeInfoT *pUpgradeInfo,
                 char *pBuf, int32 bufSize);
 /* -------------------------           */
 

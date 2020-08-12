@@ -39,7 +39,6 @@
  *              - 1036, 未通过黑白名单检查 (MDSERR_WBLIST_CHECK_FAILURE)
  *              - 1037, 集群编号不匹配 (MDSERR_SET_NUM_MISMATCH)
  *              - 1038, 无此操作权限 (MDSERR_NO_PERM)
- * @version 0.16        2019/01/18
  *
  * @since   2016/1/3
  */
