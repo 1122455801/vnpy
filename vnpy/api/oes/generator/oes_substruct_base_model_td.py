@@ -372,6 +372,18 @@ __OES_STK_HOLDING_BASE_INFO_PKT = {
     "originalAvlHld": "int64",
     "maxReduceQuota": "int64",
 }
+
+OesApplUpgradeSourceT = {
+    "ipAddress": "string",
+    "protocol": "string",
+    "username": "string",
+    "password": "string",
+    "encryptMethod": "int32",
+    "__filler": "int32",
+    "homePath": "string",
+    "fileName": "string",
+}
+
 __OES_ORD_REQ_LATENCY_FIELDS = __OES_ORD_REQ_LATENCY_FIELDS_IMPL
 __OES_ORD_CNFM_LATENCY_FIELDS = __OES_ORD_CNFM_LATENCY_FIELDS_IMPL
 __OES_TRD_CNFM_LATENCY_FIELDS = __OES_TRD_BASE_LATENCY_FIELDS

@@ -103,8 +103,8 @@ class Generator:
         for name_ in dir(module_):
             self.subs[name_] = getattr(module_, name_)
 
-        print("struct=", self.structs)
-        print("subs=", self.subs)
+        # print("struct=", self.structs)
+        # print("subs=", self.subs)
 
     def process_line_special(self, line: str):
         """处理每行"""

@@ -104,9 +104,7 @@ OesApplUpgradeItemT = {
     "newApplVerId": "string",
     "newApplVerTag": "string",
     "OesApplUpgradeSourceT": "dict",
-    "primarySource": "dict",
     "OesApplUpgradeSourceT": "dict",
-    "secondarySource": "dict",
 }
 OesApplUpgradeInfoT = {
     "clientUpgradeInfo": "OesApplUpgradeItemT",
