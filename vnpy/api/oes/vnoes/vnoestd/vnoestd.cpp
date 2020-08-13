@@ -2156,11 +2156,19 @@ void TdApi::processQueryNotifyInfo(Task *task)
 ///-------------------------------------------------------------------------------------
 ///Ö÷¶¯º¯Êý
 ///-------------------------------------------------------------------------------------
+void TdApi::createTdAPi()
+{
+	this->api = new OesClientApi();
+
+	cout << "api=" << this->api << endl;
+	this->api->RegisterSpi(this);
+	cout << "spi=" << this << endl;
+}
+
+
 bool TdApi::loadCfg(string pCfgFile)
 {
 	bool i = this->api->LoadCfg((char*)pCfgFile.c_str());
-	this->api->RegisterSpi(this);
-	
 	return i;
 }
 
@@ -2210,11 +2218,13 @@ void TdApi::setThreadSubscribeEnvId(int subscribeEnvId)
 	this->api->SetThreadSubscribeEnvId(subscribeEnvId);
 }
 
-void TdApi::init()
+bool TdApi::init()
 {
 	this->active = true;
 	this->task_thread = thread(&TdApi::processTask, this);
-	this->api->Start();
+	int32 LastClSeqNo;
+	bool i = this->api->Start(&LastClSeqNo, 0);
+	return i;
 }
 
 int TdApi::exit()
@@ -2227,7 +2237,7 @@ int TdApi::exit()
 	this->api->Stop();
 	this->api = NULL;
 	return 1;
-};
+}
 
 int TdApi::sendOrder(const dict &req)
 {
@@ -3104,6 +3114,7 @@ PYBIND11_MODULE(vnoestd, m)
     class_<TdApi, PyTdApi> TdApi(m, "TdApi", module_local());
     TdApi
         .def(init<>())
+		.def("createTdAPi", &TdApi::createTdAPi)
 		.def("loadCfg", &TdApi::loadCfg)
 		.def("setCustomizedIpAndMac", &TdApi::setCustomizedIpAndMac)
 		.def("setCustomizedIp", &TdApi::setCustomizedIp)

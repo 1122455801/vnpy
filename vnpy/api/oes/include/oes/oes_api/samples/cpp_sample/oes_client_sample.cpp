@@ -32,7 +32,7 @@
 #include    <sutil/string/spk_strings.h>
 #include    <sutil/logger/spk_log.h>
 
-
+using namespace std;
 using namespace Quant360;
 
 
@@ -118,8 +118,11 @@ OesClientApi::~OesClientApi() {
  */
 void
 OesClientApi::RegisterSpi(OesClientSpi *pSpi) {
+	
     pSpi->pApi = this;
     this->_pSpi = pSpi;
+
+	cout << "@RegisterSPi" << this->_pSpi << endl;
 }
 
 
@@ -411,20 +414,24 @@ OesClientApi::Start(int32 *pLastClSeqNo, int64 lastRptSeqNum) {
                 "请检查配置信息是否正确!");
         return FALSE;
     }
-
+	cout << "@1:" << _pSpi << endl;
     /* 连接查询通道 */
     if (_apiCfg.qryChannelCfg.addrCnt > 0) {
+		cout << "@2:" << _pSpi << endl;
         if (! OesApi_InitQryChannel2(&_qryChannel, &_apiCfg.qryChannelCfg)) {
+			cout << "@a:" << _pSpi << endl;
             SLOG_ERROR("连接查询通道失败! error[%d - %s]",
                     OesApi_GetLastError(),
                     OesApi_GetErrorMsg(OesApi_GetLastError()));
+			cout << "@b:" << _pSpi << endl;
             return FALSE;
         }
-
+		cout << "@3:" << _pSpi << endl;
         _pQryChannel = &_qryChannel;
         _isRunning = TRUE;
-
+		cout << "@4:" << _pSpi << endl;
         /* 触发查询通道的 OnConnect 回调 */
+		cout << "@5 before _OesClientApi_OnQueryConnect" << _pSpi << endl;
         ret = _OesClientApi_OnQueryConnect(_pQryChannel, _pSpi);
         if (ret < 0) {
             SLOG_ERROR("Callback query channel OnConnect failure! ret[%d]", ret);
@@ -748,6 +755,8 @@ static int32
 _OesClientApi_OnQueryConnect(OesApiSessionInfoT *pSessionInfo,
         OesClientSpi *pSpi) {
     int32                   ret = 0;
+
+	cout << "@enter _OesClientApi_OnQueryConnect funciont" << pSpi << endl;
 
     SLOG_ASSERT(pSessionInfo
             && pSessionInfo->__channelType == OESAPI_CHANNEL_TYPE_QUERY);
