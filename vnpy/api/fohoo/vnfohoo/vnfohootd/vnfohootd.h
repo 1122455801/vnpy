@@ -1,11 +1,11 @@
 //系统
 #ifdef WIN32
-#include "stdafx.h"
+#include "pch.h"
 #endif
 
-#include "vnctp.h"
+#include "vnfohoo.h"
 #include "pybind11/pybind11.h"
-#include "ctp/ThostFtdcTraderApi.h"
+#include "fohoo/ThostFtdcTraderApi.h"
 
 
 using namespace pybind11;
@@ -19,123 +19,112 @@ using namespace pybind11;
 #define ONRSPUSERLOGOUT 5
 #define ONRSPUSERPASSWORDUPDATE 6
 #define ONRSPTRADINGACCOUNTPASSWORDUPDATE 7
-#define ONRSPUSERAUTHMETHOD 8
-#define ONRSPGENUSERCAPTCHA 9
-#define ONRSPGENUSERTEXT 10
-#define ONRSPORDERINSERT 11
-#define ONRSPPARKEDORDERINSERT 12
-#define ONRSPPARKEDORDERACTION 13
-#define ONRSPORDERACTION 14
-#define ONRSPQUERYMAXORDERVOLUME 15
-#define ONRSPSETTLEMENTINFOCONFIRM 16
-#define ONRSPREMOVEPARKEDORDER 17
-#define ONRSPREMOVEPARKEDORDERACTION 18
-#define ONRSPEXECORDERINSERT 19
-#define ONRSPEXECORDERACTION 20
-#define ONRSPFORQUOTEINSERT 21
-#define ONRSPQUOTEINSERT 22
-#define ONRSPQUOTEACTION 23
-#define ONRSPBATCHORDERACTION 24
-#define ONRSPOPTIONSELFCLOSEINSERT 25
-#define ONRSPOPTIONSELFCLOSEACTION 26
-#define ONRSPCOMBACTIONINSERT 27
-#define ONRSPQRYORDER 28
-#define ONRSPQRYTRADE 29
-#define ONRSPQRYINVESTORPOSITION 30
-#define ONRSPQRYTRADINGACCOUNT 31
-#define ONRSPQRYINVESTOR 32
-#define ONRSPQRYTRADINGCODE 33
-#define ONRSPQRYINSTRUMENTMARGINRATE 34
-#define ONRSPQRYINSTRUMENTCOMMISSIONRATE 35
-#define ONRSPQRYEXCHANGE 36
-#define ONRSPQRYPRODUCT 37
-#define ONRSPQRYINSTRUMENT 38
-#define ONRSPQRYDEPTHMARKETDATA 39
-#define ONRSPQRYSETTLEMENTINFO 40
-#define ONRSPQRYTRANSFERBANK 41
-#define ONRSPQRYINVESTORPOSITIONDETAIL 42
-#define ONRSPQRYNOTICE 43
-#define ONRSPQRYSETTLEMENTINFOCONFIRM 44
-#define ONRSPQRYINVESTORPOSITIONCOMBINEDETAIL 45
-#define ONRSPQRYCFMMCTRADINGACCOUNTKEY 46
-#define ONRSPQRYEWARRANTOFFSET 47
-#define ONRSPQRYINVESTORPRODUCTGROUPMARGIN 48
-#define ONRSPQRYEXCHANGEMARGINRATE 49
-#define ONRSPQRYEXCHANGEMARGINRATEADJUST 50
-#define ONRSPQRYEXCHANGERATE 51
-#define ONRSPQRYSECAGENTACIDMAP 52
-#define ONRSPQRYPRODUCTEXCHRATE 53
-#define ONRSPQRYPRODUCTGROUP 54
-#define ONRSPQRYMMINSTRUMENTCOMMISSIONRATE 55
-#define ONRSPQRYMMOPTIONINSTRCOMMRATE 56
-#define ONRSPQRYINSTRUMENTORDERCOMMRATE 57
-#define ONRSPQRYSECAGENTTRADINGACCOUNT 58
-#define ONRSPQRYSECAGENTCHECKMODE 59
-#define ONRSPQRYSECAGENTTRADEINFO 60
-#define ONRSPQRYOPTIONINSTRTRADECOST 61
-#define ONRSPQRYOPTIONINSTRCOMMRATE 62
-#define ONRSPQRYEXECORDER 63
-#define ONRSPQRYFORQUOTE 64
-#define ONRSPQRYQUOTE 65
-#define ONRSPQRYOPTIONSELFCLOSE 66
-#define ONRSPQRYINVESTUNIT 67
-#define ONRSPQRYCOMBINSTRUMENTGUARD 68
-#define ONRSPQRYCOMBACTION 69
-#define ONRSPQRYTRANSFERSERIAL 70
-#define ONRSPQRYACCOUNTREGISTER 71
-#define ONRSPERROR 72
-#define ONRTNORDER 73
-#define ONRTNTRADE 74
-#define ONERRRTNORDERINSERT 75
-#define ONERRRTNORDERACTION 76
-#define ONRTNINSTRUMENTSTATUS 77
-#define ONRTNBULLETIN 78
-#define ONRTNTRADINGNOTICE 79
-#define ONRTNERRORCONDITIONALORDER 80
-#define ONRTNEXECORDER 81
-#define ONERRRTNEXECORDERINSERT 82
-#define ONERRRTNEXECORDERACTION 83
-#define ONERRRTNFORQUOTEINSERT 84
-#define ONRTNQUOTE 85
-#define ONERRRTNQUOTEINSERT 86
-#define ONERRRTNQUOTEACTION 87
-#define ONRTNFORQUOTERSP 88
-#define ONRTNCFMMCTRADINGACCOUNTTOKEN 89
-#define ONERRRTNBATCHORDERACTION 90
-#define ONRTNOPTIONSELFCLOSE 91
-#define ONERRRTNOPTIONSELFCLOSEINSERT 92
-#define ONERRRTNOPTIONSELFCLOSEACTION 93
-#define ONRTNCOMBACTION 94
-#define ONERRRTNCOMBACTIONINSERT 95
-#define ONRSPQRYCONTRACTBANK 96
-#define ONRSPQRYPARKEDORDER 97
-#define ONRSPQRYPARKEDORDERACTION 98
-#define ONRSPQRYTRADINGNOTICE 99
-#define ONRSPQRYBROKERTRADINGPARAMS 100
-#define ONRSPQRYBROKERTRADINGALGOS 101
-#define ONRSPQUERYCFMMCTRADINGACCOUNTTOKEN 102
-#define ONRTNFROMBANKTOFUTUREBYBANK 103
-#define ONRTNFROMFUTURETOBANKBYBANK 104
-#define ONRTNREPEALFROMBANKTOFUTUREBYBANK 105
-#define ONRTNREPEALFROMFUTURETOBANKBYBANK 106
-#define ONRTNFROMBANKTOFUTUREBYFUTURE 107
-#define ONRTNFROMFUTURETOBANKBYFUTURE 108
-#define ONRTNREPEALFROMBANKTOFUTUREBYFUTUREMANUAL 109
-#define ONRTNREPEALFROMFUTURETOBANKBYFUTUREMANUAL 110
-#define ONRTNQUERYBANKBALANCEBYFUTURE 111
-#define ONERRRTNBANKTOFUTUREBYFUTURE 112
-#define ONERRRTNFUTURETOBANKBYFUTURE 113
-#define ONERRRTNREPEALBANKTOFUTUREBYFUTUREMANUAL 114
-#define ONERRRTNREPEALFUTURETOBANKBYFUTUREMANUAL 115
-#define ONERRRTNQUERYBANKBALANCEBYFUTURE 116
-#define ONRTNREPEALFROMBANKTOFUTUREBYFUTURE 117
-#define ONRTNREPEALFROMFUTURETOBANKBYFUTURE 118
-#define ONRSPFROMBANKTOFUTUREBYFUTURE 119
-#define ONRSPFROMFUTURETOBANKBYFUTURE 120
-#define ONRSPQUERYBANKACCOUNTMONEYBYFUTURE 121
-#define ONRTNOPENACCOUNTBYBANK 122
-#define ONRTNCANCELACCOUNTBYBANK 123
-#define ONRTNCHANGEACCOUNTBYBANK 124
+#define ONRSPORDERINSERT 8
+#define ONRSPPARKEDORDERINSERT 9
+#define ONRSPPARKEDORDERACTION 10
+#define ONRSPORDERACTION 11
+#define ONRSPQUERYMAXORDERVOLUME 12
+#define ONRSPSETTLEMENTINFOCONFIRM 13
+#define ONRSPREMOVEPARKEDORDER 14
+#define ONRSPREMOVEPARKEDORDERACTION 15
+#define ONRSPEXECORDERINSERT 16
+#define ONRSPEXECORDERACTION 17
+#define ONRSPFORQUOTEINSERT 18
+#define ONRSPQUOTEINSERT 19
+#define ONRSPQUOTEACTION 20
+#define ONRSPLOCKINSERT 21
+#define ONRSPCOMBACTIONINSERT 22
+#define ONRSPQRYORDER 23
+#define ONRSPQRYTRADE 24
+#define ONRSPQRYINVESTORPOSITION 25
+#define ONRSPQRYTRADINGACCOUNT 26
+#define ONRSPQRYINVESTOR 27
+#define ONRSPQRYTRADINGCODE 28
+#define ONRSPQRYINSTRUMENTMARGINRATE 29
+#define ONRSPQRYINSTRUMENTCOMMISSIONRATE 30
+#define ONRSPQRYEXCHANGE 31
+#define ONRSPQRYPRODUCT 32
+#define ONRSPQRYINSTRUMENT 33
+#define ONRSPQRYDEPTHMARKETDATA 34
+#define ONRSPQRYSETTLEMENTINFO 35
+#define ONRSPQRYTRANSFERBANK 36
+#define ONRSPQRYINVESTORPOSITIONDETAIL 37
+#define ONRSPQRYNOTICE 38
+#define ONRSPQRYSETTLEMENTINFOCONFIRM 39
+#define ONRSPQRYINVESTORPOSITIONCOMBINEDETAIL 40
+#define ONRSPQRYCFMMCTRADINGACCOUNTKEY 41
+#define ONRSPQRYEWARRANTOFFSET 42
+#define ONRSPQRYINVESTORPRODUCTGROUPMARGIN 43
+#define ONRSPQRYEXCHANGEMARGINRATE 44
+#define ONRSPQRYEXCHANGEMARGINRATEADJUST 45
+#define ONRSPQRYEXCHANGERATE 46
+#define ONRSPQRYSECAGENTACIDMAP 47
+#define ONRSPQRYPRODUCTEXCHRATE 48
+#define ONRSPQRYPRODUCTGROUP 49
+#define ONRSPQRYOPTIONINSTRTRADECOST 50
+#define ONRSPQRYOPTIONINSTRCOMMRATE 51
+#define ONRSPQRYEXECORDER 52
+#define ONRSPQRYFORQUOTE 53
+#define ONRSPQRYQUOTE 54
+#define ONRSPQRYLOCK 55
+#define ONRSPQRYLOCKPOSITION 56
+#define ONRSPQRYINVESTORLEVEL 57
+#define ONRSPQRYEXECFREEZE 58
+#define ONRSPQRYCOMBINSTRUMENTGUARD 59
+#define ONRSPQRYCOMBACTION 60
+#define ONRSPQRYTRANSFERSERIAL 61
+#define ONRSPQRYACCOUNTREGISTER 62
+#define ONRSPERROR 63
+#define ONRTNORDER 64
+#define ONRTNTRADE 65
+#define ONERRRTNORDERINSERT 66
+#define ONERRRTNORDERACTION 67
+#define ONRTNINSTRUMENTSTATUS 68
+#define ONRTNTRADINGNOTICE 69
+#define ONRTNERRORCONDITIONALORDER 70
+#define ONRTNEXECORDER 71
+#define ONERRRTNEXECORDERINSERT 72
+#define ONERRRTNEXECORDERACTION 73
+#define ONERRRTNFORQUOTEINSERT 74
+#define ONRTNQUOTE 75
+#define ONERRRTNQUOTEINSERT 76
+#define ONERRRTNQUOTEACTION 77
+#define ONRTNFORQUOTERSP 78
+#define ONRTNCFMMCTRADINGACCOUNTTOKEN 79
+#define ONRTNLOCK 80
+#define ONERRRTNLOCKINSERT 81
+#define ONRTNCOMBACTION 82
+#define ONERRRTNCOMBACTIONINSERT 83
+#define ONRSPQRYCONTRACTBANK 84
+#define ONRSPQRYPARKEDORDER 85
+#define ONRSPQRYPARKEDORDERACTION 86
+#define ONRSPQRYTRADINGNOTICE 87
+#define ONRSPQRYBROKERTRADINGPARAMS 88
+#define ONRSPQRYBROKERTRADINGALGOS 89
+#define ONRSPQUERYCFMMCTRADINGACCOUNTTOKEN 90
+#define ONRTNFROMBANKTOFUTUREBYBANK 91
+#define ONRTNFROMFUTURETOBANKBYBANK 92
+#define ONRTNREPEALFROMBANKTOFUTUREBYBANK 93
+#define ONRTNREPEALFROMFUTURETOBANKBYBANK 94
+#define ONRTNFROMBANKTOFUTUREBYFUTURE 95
+#define ONRTNFROMFUTURETOBANKBYFUTURE 96
+#define ONRTNREPEALFROMBANKTOFUTUREBYFUTUREMANUAL 97
+#define ONRTNREPEALFROMFUTURETOBANKBYFUTUREMANUAL 98
+#define ONRTNQUERYBANKBALANCEBYFUTURE 99
+#define ONERRRTNBANKTOFUTUREBYFUTURE 100
+#define ONERRRTNFUTURETOBANKBYFUTURE 101
+#define ONERRRTNREPEALBANKTOFUTUREBYFUTUREMANUAL 102
+#define ONERRRTNREPEALFUTURETOBANKBYFUTUREMANUAL 103
+#define ONERRRTNQUERYBANKBALANCEBYFUTURE 104
+#define ONRTNREPEALFROMBANKTOFUTUREBYFUTURE 105
+#define ONRTNREPEALFROMFUTURETOBANKBYFUTURE 106
+#define ONRSPFROMBANKTOFUTUREBYFUTURE 107
+#define ONRSPFROMFUTURETOBANKBYFUTURE 108
+#define ONRSPQUERYBANKACCOUNTMONEYBYFUTURE 109
+#define ONRTNOPENACCOUNTBYBANK 110
+#define ONRTNCANCELACCOUNTBYBANK 111
+#define ONRTNCHANGEACCOUNTBYBANK 112
+
 
 
 ///-------------------------------------------------------------------------------------
@@ -167,8 +156,6 @@ public:
     //-------------------------------------------------------------------------------------
     //API回调函数
     //-------------------------------------------------------------------------------------
-
-	///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 	virtual void OnFrontConnected();
 
 	///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
@@ -178,11 +165,11 @@ public:
 	///        0x2001 接收心跳超时
 	///        0x2002 发送心跳失败
 	///        0x2003 收到错误报文
-	virtual void OnFrontDisconnected(int nReason);
+	virtual void OnFrontDisconnected(int nReason) ;
 
 	///心跳超时警告。当长时间未收到报文时，该方法被调用。
 	///@param nTimeLapse 距离上次接收报文的时间
-	virtual void OnHeartBeatWarning(int nTimeLapse);
+	virtual void OnHeartBeatWarning(int nTimeLapse) ;
 
 	///客户端认证响应
 	virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -199,15 +186,6 @@ public:
 
 	///资金账户口令更新请求响应
 	virtual void OnRspTradingAccountPasswordUpdate(CThostFtdcTradingAccountPasswordUpdateField *pTradingAccountPasswordUpdate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///查询用户当前支持的认证模式的回复
-	virtual void OnRspUserAuthMethod(CThostFtdcRspUserAuthMethodField *pRspUserAuthMethod, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///获取图形验证码请求的回复
-	virtual void OnRspGenUserCaptcha(CThostFtdcRspGenUserCaptchaField *pRspGenUserCaptcha, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///获取短信验证码请求的回复
-	virtual void OnRspGenUserText(CThostFtdcRspGenUserTextField *pRspGenUserText, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///报单录入请求响应
 	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -248,14 +226,8 @@ public:
 	///报价操作请求响应
 	virtual void OnRspQuoteAction(CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///批量报单操作请求响应
-	virtual void OnRspBatchOrderAction(CThostFtdcInputBatchOrderActionField *pInputBatchOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///期权自对冲录入请求响应
-	virtual void OnRspOptionSelfCloseInsert(CThostFtdcInputOptionSelfCloseField *pInputOptionSelfClose, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///期权自对冲操作请求响应
-	virtual void OnRspOptionSelfCloseAction(CThostFtdcInputOptionSelfCloseActionField *pInputOptionSelfCloseAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	///锁定应答
+	virtual void OnRspLockInsert(CThostFtdcInputLockField *pInputLock, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///申请组合录入请求响应
 	virtual void OnRspCombActionInsert(CThostFtdcInputCombActionField *pInputCombAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -341,24 +313,6 @@ public:
 	///请求查询产品组
 	virtual void OnRspQryProductGroup(CThostFtdcProductGroupField *pProductGroup, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///请求查询做市商合约手续费率响应
-	virtual void OnRspQryMMInstrumentCommissionRate(CThostFtdcMMInstrumentCommissionRateField *pMMInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///请求查询做市商期权合约手续费响应
-	virtual void OnRspQryMMOptionInstrCommRate(CThostFtdcMMOptionInstrCommRateField *pMMOptionInstrCommRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///请求查询报单手续费响应
-	virtual void OnRspQryInstrumentOrderCommRate(CThostFtdcInstrumentOrderCommRateField *pInstrumentOrderCommRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///请求查询资金账户响应
-	virtual void OnRspQrySecAgentTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///请求查询二级代理商资金校验模式响应
-	virtual void OnRspQrySecAgentCheckMode(CThostFtdcSecAgentCheckModeField *pSecAgentCheckMode, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///请求查询二级代理商信息响应
-	virtual void OnRspQrySecAgentTradeInfo(CThostFtdcSecAgentTradeInfoField *pSecAgentTradeInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
 	///请求查询期权交易成本响应
 	virtual void OnRspQryOptionInstrTradeCost(CThostFtdcOptionInstrTradeCostField *pOptionInstrTradeCost, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
@@ -374,11 +328,17 @@ public:
 	///请求查询报价响应
 	virtual void OnRspQryQuote(CThostFtdcQuoteField *pQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///请求查询期权自对冲响应
-	virtual void OnRspQryOptionSelfClose(CThostFtdcOptionSelfCloseField *pOptionSelfClose, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	///请求查询锁定应答
+	virtual void OnRspQryLock(CThostFtdcLockField *pLock, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///请求查询投资单元响应
-	virtual void OnRspQryInvestUnit(CThostFtdcInvestUnitField *pInvestUnit, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	///请求查询锁定证券仓位应答
+	virtual void OnRspQryLockPosition(CThostFtdcLockPositionField *pLockPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	///请求查询投资者分级
+	virtual void OnRspQryInvestorLevel(CThostFtdcInvestorLevelField *pInvestorLevel, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	///请求查询E+1日行权冻结响应
+	virtual void OnRspQryExecFreeze(CThostFtdcExecFreezeField *pExecFreeze, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///请求查询组合合约安全系数响应
 	virtual void OnRspQryCombInstrumentGuard(CThostFtdcCombInstrumentGuardField *pCombInstrumentGuard, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -409,9 +369,6 @@ public:
 
 	///合约交易状态通知
 	virtual void OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField *pInstrumentStatus);
-
-	///交易所公告通知
-	virtual void OnRtnBulletin(CThostFtdcBulletinField *pBulletin);
 
 	///交易通知
 	virtual void OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField *pTradingNoticeInfo);
@@ -446,17 +403,11 @@ public:
 	///保证金监控中心用户令牌
 	virtual void OnRtnCFMMCTradingAccountToken(CThostFtdcCFMMCTradingAccountTokenField *pCFMMCTradingAccountToken);
 
-	///批量报单操作错误回报
-	virtual void OnErrRtnBatchOrderAction(CThostFtdcBatchOrderActionField *pBatchOrderAction, CThostFtdcRspInfoField *pRspInfo);
+	///锁定通知
+	virtual void OnRtnLock(CThostFtdcLockField *pLock);
 
-	///期权自对冲通知
-	virtual void OnRtnOptionSelfClose(CThostFtdcOptionSelfCloseField *pOptionSelfClose);
-
-	///期权自对冲录入错误回报
-	virtual void OnErrRtnOptionSelfCloseInsert(CThostFtdcInputOptionSelfCloseField *pInputOptionSelfClose, CThostFtdcRspInfoField *pRspInfo);
-
-	///期权自对冲操作错误回报
-	virtual void OnErrRtnOptionSelfCloseAction(CThostFtdcOptionSelfCloseActionField *pOptionSelfCloseAction, CThostFtdcRspInfoField *pRspInfo);
+	///锁定错误通知
+	virtual void OnErrRtnLockInsert(CThostFtdcInputLockField *pInputLock, CThostFtdcRspInfoField *pRspInfo);
 
 	///申请组合通知
 	virtual void OnRtnCombAction(CThostFtdcCombActionField *pCombAction);
@@ -554,8 +505,8 @@ public:
     //-------------------------------------------------------------------------------------
     //task：任务
     //-------------------------------------------------------------------------------------
-    void processTask();
 
+	void processTask();
 	void processFrontConnected(Task *task);
 
 	void processFrontDisconnected(Task *task);
@@ -571,12 +522,6 @@ public:
 	void processRspUserPasswordUpdate(Task *task);
 
 	void processRspTradingAccountPasswordUpdate(Task *task);
-
-	void processRspUserAuthMethod(Task *task);
-
-	void processRspGenUserCaptcha(Task *task);
-
-	void processRspGenUserText(Task *task);
 
 	void processRspOrderInsert(Task *task);
 
@@ -604,11 +549,7 @@ public:
 
 	void processRspQuoteAction(Task *task);
 
-	void processRspBatchOrderAction(Task *task);
-
-	void processRspOptionSelfCloseInsert(Task *task);
-
-	void processRspOptionSelfCloseAction(Task *task);
+	void processRspLockInsert(Task *task);
 
 	void processRspCombActionInsert(Task *task);
 
@@ -666,18 +607,6 @@ public:
 
 	void processRspQryProductGroup(Task *task);
 
-	void processRspQryMMInstrumentCommissionRate(Task *task);
-
-	void processRspQryMMOptionInstrCommRate(Task *task);
-
-	void processRspQryInstrumentOrderCommRate(Task *task);
-
-	void processRspQrySecAgentTradingAccount(Task *task);
-
-	void processRspQrySecAgentCheckMode(Task *task);
-
-	void processRspQrySecAgentTradeInfo(Task *task);
-
 	void processRspQryOptionInstrTradeCost(Task *task);
 
 	void processRspQryOptionInstrCommRate(Task *task);
@@ -688,9 +617,13 @@ public:
 
 	void processRspQryQuote(Task *task);
 
-	void processRspQryOptionSelfClose(Task *task);
+	void processRspQryLock(Task *task);
 
-	void processRspQryInvestUnit(Task *task);
+	void processRspQryLockPosition(Task *task);
+
+	void processRspQryInvestorLevel(Task *task);
+
+	void processRspQryExecFreeze(Task *task);
 
 	void processRspQryCombInstrumentGuard(Task *task);
 
@@ -711,8 +644,6 @@ public:
 	void processErrRtnOrderAction(Task *task);
 
 	void processRtnInstrumentStatus(Task *task);
-
-	void processRtnBulletin(Task *task);
 
 	void processRtnTradingNotice(Task *task);
 
@@ -736,13 +667,9 @@ public:
 
 	void processRtnCFMMCTradingAccountToken(Task *task);
 
-	void processErrRtnBatchOrderAction(Task *task);
+	void processRtnLock(Task *task);
 
-	void processRtnOptionSelfClose(Task *task);
-
-	void processErrRtnOptionSelfCloseInsert(Task *task);
-
-	void processErrRtnOptionSelfCloseAction(Task *task);
+	void processErrRtnLockInsert(Task *task);
 
 	void processRtnCombAction(Task *task);
 
@@ -806,6 +733,8 @@ public:
 
 	void processRtnChangeAccountByBank(Task *task);
 
+
+
     //-------------------------------------------------------------------------------------
     //data：回调函数的数据字典
     //error：回调函数的错误字典
@@ -829,12 +758,6 @@ public:
 	virtual void onRspUserPasswordUpdate(const dict &data, const dict &error, int reqid, bool last) {};
 
 	virtual void onRspTradingAccountPasswordUpdate(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspUserAuthMethod(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspGenUserCaptcha(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspGenUserText(const dict &data, const dict &error, int reqid, bool last) {};
 
 	virtual void onRspOrderInsert(const dict &data, const dict &error, int reqid, bool last) {};
 
@@ -862,11 +785,7 @@ public:
 
 	virtual void onRspQuoteAction(const dict &data, const dict &error, int reqid, bool last) {};
 
-	virtual void onRspBatchOrderAction(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspOptionSelfCloseInsert(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspOptionSelfCloseAction(const dict &data, const dict &error, int reqid, bool last) {};
+	virtual void onRspLockInsert(const dict &data, const dict &error, int reqid, bool last) {};
 
 	virtual void onRspCombActionInsert(const dict &data, const dict &error, int reqid, bool last) {};
 
@@ -924,18 +843,6 @@ public:
 
 	virtual void onRspQryProductGroup(const dict &data, const dict &error, int reqid, bool last) {};
 
-	virtual void onRspQryMMInstrumentCommissionRate(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspQryMMOptionInstrCommRate(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspQryInstrumentOrderCommRate(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspQrySecAgentTradingAccount(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspQrySecAgentCheckMode(const dict &data, const dict &error, int reqid, bool last) {};
-
-	virtual void onRspQrySecAgentTradeInfo(const dict &data, const dict &error, int reqid, bool last) {};
-
 	virtual void onRspQryOptionInstrTradeCost(const dict &data, const dict &error, int reqid, bool last) {};
 
 	virtual void onRspQryOptionInstrCommRate(const dict &data, const dict &error, int reqid, bool last) {};
@@ -946,9 +853,13 @@ public:
 
 	virtual void onRspQryQuote(const dict &data, const dict &error, int reqid, bool last) {};
 
-	virtual void onRspQryOptionSelfClose(const dict &data, const dict &error, int reqid, bool last) {};
+	virtual void onRspQryLock(const dict &data, const dict &error, int reqid, bool last) {};
 
-	virtual void onRspQryInvestUnit(const dict &data, const dict &error, int reqid, bool last) {};
+	virtual void onRspQryLockPosition(const dict &data, const dict &error, int reqid, bool last) {};
+
+	virtual void onRspQryInvestorLevel(const dict &data, const dict &error, int reqid, bool last) {};
+
+	virtual void onRspQryExecFreeze(const dict &data, const dict &error, int reqid, bool last) {};
 
 	virtual void onRspQryCombInstrumentGuard(const dict &data, const dict &error, int reqid, bool last) {};
 
@@ -969,8 +880,6 @@ public:
 	virtual void onErrRtnOrderAction(const dict &data, const dict &error) {};
 
 	virtual void onRtnInstrumentStatus(const dict &data) {};
-
-	virtual void onRtnBulletin(const dict &data) {};
 
 	virtual void onRtnTradingNotice(const dict &data) {};
 
@@ -994,13 +903,9 @@ public:
 
 	virtual void onRtnCFMMCTradingAccountToken(const dict &data) {};
 
-	virtual void onErrRtnBatchOrderAction(const dict &data, const dict &error) {};
+	virtual void onRtnLock(const dict &data) {};
 
-	virtual void onRtnOptionSelfClose(const dict &data) {};
-
-	virtual void onErrRtnOptionSelfCloseInsert(const dict &data, const dict &error) {};
-
-	virtual void onErrRtnOptionSelfCloseAction(const dict &data, const dict &error) {};
+	virtual void onErrRtnLockInsert(const dict &data, const dict &error) {};
 
 	virtual void onRtnCombAction(const dict &data) {};
 
@@ -1064,6 +969,8 @@ public:
 
 	virtual void onRtnChangeAccountByBank(const dict &data) {};
 
+
+
     //-------------------------------------------------------------------------------------
     //req:主动函数的请求字典
     //-------------------------------------------------------------------------------------
@@ -1096,18 +1003,6 @@ public:
 
 	int reqTradingAccountPasswordUpdate(const dict &req, int reqid);
 
-	int reqUserAuthMethod(const dict &req, int reqid);
-
-	int reqGenUserCaptcha(const dict &req, int reqid);
-
-	int reqGenUserText(const dict &req, int reqid);
-
-	int reqUserLoginWithCaptcha(const dict &req, int reqid);
-
-	int reqUserLoginWithText(const dict &req, int reqid);
-
-	int reqUserLoginWithOTP(const dict &req, int reqid);
-
 	int reqOrderInsert(const dict &req, int reqid);
 
 	int reqParkedOrderInsert(const dict &req, int reqid);
@@ -1134,11 +1029,7 @@ public:
 
 	int reqQuoteAction(const dict &req, int reqid);
 
-	int reqBatchOrderAction(const dict &req, int reqid);
-
-	int reqOptionSelfCloseInsert(const dict &req, int reqid);
-
-	int reqOptionSelfCloseAction(const dict &req, int reqid);
+	int reqLockInsert(const dict &req, int reqid);
 
 	int reqCombActionInsert(const dict &req, int reqid);
 
@@ -1196,18 +1087,6 @@ public:
 
 	int reqQryProductGroup(const dict &req, int reqid);
 
-	int reqQryMMInstrumentCommissionRate(const dict &req, int reqid);
-
-	int reqQryMMOptionInstrCommRate(const dict &req, int reqid);
-
-	int reqQryInstrumentOrderCommRate(const dict &req, int reqid);
-
-	int reqQrySecAgentTradingAccount(const dict &req, int reqid);
-
-	int reqQrySecAgentCheckMode(const dict &req, int reqid);
-
-	int reqQrySecAgentTradeInfo(const dict &req, int reqid);
-
 	int reqQryOptionInstrTradeCost(const dict &req, int reqid);
 
 	int reqQryOptionInstrCommRate(const dict &req, int reqid);
@@ -1218,9 +1097,13 @@ public:
 
 	int reqQryQuote(const dict &req, int reqid);
 
-	int reqQryOptionSelfClose(const dict &req, int reqid);
+	int reqQryLock(const dict &req, int reqid);
 
-	int reqQryInvestUnit(const dict &req, int reqid);
+	int reqQryLockPosition(const dict &req, int reqid);
+
+	int reqQryInvestorLevel(const dict &req, int reqid);
+
+	int reqQryExecFreeze(const dict &req, int reqid);
 
 	int reqQryCombInstrumentGuard(const dict &req, int reqid);
 
@@ -1249,4 +1132,6 @@ public:
 	int reqFromFutureToBankByFuture(const dict &req, int reqid);
 
 	int reqQueryBankAccountMoneyByFuture(const dict &req, int reqid);
+
+
 };
