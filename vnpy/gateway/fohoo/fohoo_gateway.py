@@ -133,8 +133,10 @@ class FohooGateway(BaseGateway):
     """
 
     default_setting = {
-        "用户名": "",
-        "密码": "",
+        "交易用户名": "",
+        "交易密码": "",
+        "行情用户名": "",
+        "行情密码": "",
         "经纪商代码": "",
         "交易服务器": "",
         "行情服务器": "",
@@ -154,8 +156,10 @@ class FohooGateway(BaseGateway):
 
     def connect(self, setting: dict):
         """"""
-        userid = setting["用户名"]
-        password = setting["密码"]
+        td_userid = setting["交易用户名"]
+        td_password = setting["交易密码"]
+        md_userid = setting["行情用户名"]
+        md_password = setting["行情密码"]
         brokerid = setting["经纪商代码"]
         td_address = setting["交易服务器"]
         md_address = setting["行情服务器"]
@@ -175,8 +179,16 @@ class FohooGateway(BaseGateway):
         ):
             md_address = "tcp://" + md_address
 
-        self.td_api.connect(td_address, userid, password, brokerid, auth_code, appid, product_info)
-        self.md_api.connect(md_address, userid, password, brokerid)
+        self.td_api.connect(
+            td_address,
+            td_userid,
+            td_password,
+            brokerid,
+            auth_code,
+            appid,
+            product_info
+        )
+        self.md_api.connect(md_address, md_userid, md_password, brokerid)
 
         self.init_query()
 
