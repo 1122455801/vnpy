@@ -21,39 +21,24 @@ class ApiGenerator:
 
     def load_struct(self):
         """加载Struct"""
-        module_name = f"{self.prefix}_struct"
+        module_name = f"{self.prefix}_struct_md"
         module = importlib.import_module(module_name)
 
         for name in dir(module):
             if "__" not in name:
                 self.structs[name] = getattr(module, name)
 
-        self.structs["ErrorInfo"] = {
-            "err_code": "int32_t",
-            "err_msg": "string"
-        }
-
-        self.structs["IpAddr"] = {
-            "ip": "string",
-            "port": "int"
-        }
 
     def run(self):
         """运行生成"""
         self.f_cpp = open(self.filename, "r", encoding="UTF-8")
-
         for line in self.f_cpp:
             self.process_line(line)
 
         self.f_cpp.close()
-
-        self.generate_header_define()
-        self.generate_header_process()
         self.generate_header_on()
         self.generate_header_function()
 
-        # self.generate_source_task()
-        # self.generate_source_switch()
         self.generate_source_spi()
         self.generate_source_function()
         self.generate_source_on()
@@ -69,6 +54,7 @@ class ApiGenerator:
         line = line.replace("{}", "")
 
         if "virtual void On" in line:
+
             self.process_callback(line)
         elif "virtual int" in line:
             self.process_function(line)
@@ -84,14 +70,12 @@ class ApiGenerator:
     def process_function(self, line: str):
         """处理主动函数"""
         name = line.split("(")[0].split(" ")[-1]
-        # name = line[line.index("Que"):line.index("(")]
 
         d = self.generate_arg_dict(line)
         self.functions[name] = d
 
     def generate_arg_dict(self, line: str):
         """生成参数字典"""
-        # print(line)
         args_str = line[line.index("(") + 1:line.index(")")]
         if not args_str:
             return {}
@@ -101,9 +85,18 @@ class ApiGenerator:
         for arg in args:
             if "=" in arg:
                 arg = arg.split("=")[0]
+
+            if "[" in arg:
+                arg = arg.replace("[]", "")
+            if "*" in arg:
+                arg = arg.replace("*", "")
+
+            if "unsigned int usize" in arg:
+                continue
             words = arg.split(" ")
             words = [word for word in words if word]
-            d[words[-1].replace("*", "")] = words[-2].replace("*", "")
+
+            d[words[-1]] = words[-2]
         return d
 
     def generate_header_define(self):
@@ -128,18 +121,15 @@ class ApiGenerator:
         filename = f"{self.prefix}_{self.name}_header_on.h"
         with open(filename, "w") as f:
             for name, d in self.callbacks.items():
-                
                 name = name.replace("On", "on")
 
                 args_list = []
                 for name_, type_ in d.items():
                     if type_ == "int":
                         args_list.append(f"int {name_}")
-                    elif type_ == "bool":
-                        args_list.append("bool last")
-                    elif type_ == "ErrorInfo":
+                    elif type_ == "ErrMsg":
                         args_list.append("const dict &error")
-                    elif type_ == "int16_t":
+                    elif type_ == "MKtype":
                         args_list.append(f"int {name_}")
                     elif type_ == "int32_t":
                         args_list.append(f"int {name_}")
@@ -148,10 +138,7 @@ class ApiGenerator:
                     elif type_ == "char":
                         args_list.append(f"string {name_}")
                     else:
-                        if "const dict &data" in args_list:
-                            args_list.append("const dict &data_1")
-                        else:
-                            args_list.append("const dict &data")
+                        args_list.append("const dict &data")
 
                 args_str = ", ".join(args_list)
                 line = f"virtual void {name}({args_str}) {{}};\n\n"
@@ -169,8 +156,8 @@ class ApiGenerator:
                 for name_, type_ in d.items():
                     if type_ == "int" or type_ == "int16_t" or type_ == "int32_t" or type_ == "int64_t":
                         args_list.append(f"int {name_}")
-                    elif type_ == "bool":
-                        args_list.append(f"bool {name_}")
+                    elif type_ == "MKtype":
+                        args_list.append(f"int {name_}")
                     elif type_ == "ErrorInfo":
                         args_list.append("const dict &error")
                     elif type_ == "char":
@@ -209,11 +196,11 @@ class ApiGenerator:
                         args.append(field)
                     elif type_ == "int32_t":
                         args.append(field)
-                    elif type_ == "bool":
+                    elif type_ == "MKtype":
                         args.append(field)
                     elif type_ == "char":
                         args.append(field)
-                    elif type_ == "ErrorInfo":
+                    elif type_ == "ErrMsg":
                         args.append("error")
 
                         f.write("\tdict error;\n")
@@ -221,8 +208,7 @@ class ApiGenerator:
 
                         struct_fields = self.structs[type_]
                         for struct_field, struct_type in struct_fields.items():
-                            
-                            if struct_type == "string":
+                            if struct_type == "char":
                                 f.write(
                                     f"\t\terror[\"{struct_field}\"] = toUtf({field}->{struct_field});\n")
                             else:
@@ -238,7 +224,6 @@ class ApiGenerator:
 
                         struct_fields = self.structs[type_]
                         for struct_field, struct_type in struct_fields.items():
-                            # print(struct_type)
                             if struct_type == "char":
                                 f.write(
                                     f"\t\tdata[\"{struct_field}\"] = toUtf({field}->{struct_field});\n")
@@ -269,7 +254,7 @@ class ApiGenerator:
                     
                     for field, type_ in d.items():
 
-                        if type_ == "int" or type_ == "int64_t" or type_ == "int16_t" or type_ == "int32_t" or type_ == "int64_t":
+                        if type_ == "int" or type_ == "int64_t" or type_ == "int16_t" or type_ == "int32_t" or type_ == "MKtype":
                             args.append(f"int {field}")
                             end_args.append(field)
                         elif type_ == "bool":
@@ -287,7 +272,7 @@ class ApiGenerator:
                     end_args_str = ", ".join(end_args)
 
                     f.write(
-                        f"int {self.class_name}::{req_name}({args_str})\n")
+                        f"int32_t {self.class_name}::{req_name}({args_str})\n")
 
                     f.write("{\n")
                     if "const dict &req" not in args:
@@ -320,13 +305,13 @@ class ApiGenerator:
                 args = []
                 bind_args = ["void", self.class_name, on_name]
                 for field, type_ in d.items():
-                    if type_ == "int":
+                    if type_ == "int" or type_ == "MKtype":
                         args.append(f"int {field}")
                         bind_args.append(field)
-                    elif type_ == "bool":
+                    elif type_ == "MKtype":
                         args.append("bool last")
                         bind_args.append("last")
-                    elif type_ == "ErrorInfo":
+                    elif type_ == "ErrMsg":
                         args.append("const dict &error")
                         bind_args.append("error")
                     elif type_ == "char":
@@ -373,5 +358,5 @@ class ApiGenerator:
 
 if __name__ == "__main__":
 
-    td_generator = ApiGenerator("../include/gtja/hft_trader_api_.h", "gtja", "td", "TdApi")
-    td_generator.run()
+    md_generator = ApiGenerator("../include/sip/header_for_generator/isipuix_.h", "sip", "md", "MdApi")
+    md_generator.run()
