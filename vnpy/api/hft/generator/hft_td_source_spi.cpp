@@ -4,7 +4,7 @@
 	this->onDisconnect();
 };
 
-    void TdApi::OnError(ErrorInfo* error_info, int request_id) 
+    void TdApi::OnError(ErrorInfo* error_info, int request_id = 0) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -602,7 +602,7 @@
 	this->onQueryCreditMortgageHoldRsp(data, error, request_id, is_last, pos_str);
 };
 
-    void TdApi::OnQueryCreditAssetsRsp(CreditAssetsDetail* detail, ErrorInfo* error_info, int request_id)
+    void TdApi::OnQueryCreditAssetsRsp(CreditAssetsDetail* detail, ErrorInfo* error_info, int request_id) {
 {
 	gil_scoped_acquire acquire;
 	dict data;
@@ -752,7 +752,7 @@
 	this->onQueryCreditRepayStockRsp(data, error, request_id, is_last, pos_str);
 };
 
-    void TdApi::OnQueryCreditSecuritySellQtyRsp(CreditSecuritySellQtyRsp* rsp, ErrorInfo* error_info, int request_id, bool is_last)
+    void TdApi::OnQueryCreditSecuritySellQtyRsp(CreditSecuritySellQtyRsp* rsp, ErrorInfo* error_info, int request_id, bool is_last) {
 {
 	gil_scoped_acquire acquire;
 	dict data;
