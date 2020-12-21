@@ -32,10 +32,6 @@ void MdApi::OnSubscribe(ErrMsg *errmsg)
 		error["channel"] = errmsg->channel;
 		error["errcode"] = errmsg->errcode;
 		error["errstr"] = toUtf(errmsg->errstr);
-	//	error["mktype"] = errmsg->mktype;
-	//	error["datatype"] = errmsg->datatype;
-	//	error["usize"] = errmsg->usize;
-	//	//error["codes"] = errmsg->codes;
 	}
 	this->onSubscribe(error);
 };
@@ -403,6 +399,7 @@ void MdApi::release()
 
 int MdApi::exit()
 {
+	this->api->Stop();
 	this->api->Register(NULL);
 	this->api->Release();
 	this->api = NULL;
